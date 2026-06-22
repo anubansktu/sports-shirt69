@@ -52,12 +52,11 @@
         </div>
     </div>
 
-    <!-- Header & Logo -->
     <header class="bg-tuRed text-white shadow-md sticky top-0 z-40 border-b-4 border-tuYellow no-print">
         <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col lg:flex-row justify-between items-center gap-3">
             <div class="flex items-center gap-3">
-                <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center font-bold text-tuRed shadow-sm overflow-hidden border-2 border-tuYellow">
-                    <img src="logo.png" onerror="this.outerHTML='<span class=\'text-lg\'>TU</span>'" alt="โลโก้โรงเรียน" class="w-full h-full object-cover">
+                <div class="w-12 h-12 ">
+                    <img src="https://nseojcnqomakymrrfumi.supabase.co/storage/v1/object/public/img/logo.png" onerror="this.outerHTML='<span class=\'text-lg\'>TU</span>'" alt="โลโก้โรงเรียน" class="w-full h-full object-cover">
                 </div>
                 <div>
                     <h1 class="text-xl font-bold leading-tight">ระบบสั่งซื้อเสื้อกีฬาสี ปีการศึกษา 2569</h1>
@@ -80,7 +79,6 @@
 
     <main class="flex-grow max-w-6xl w-full mx-auto p-4 space-y-6 no-print">
         
-        <!-- ================= 0. LOGIN VIEW ================= -->
         <section id="view-login" class="role-view hidden max-w-md mx-auto mt-10">
             <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 text-center">
                 <div class="w-16 h-16 bg-red-50 text-tuRed rounded-full flex items-center justify-center mx-auto mb-4"><i data-lucide="lock" class="w-8 h-8"></i></div>
@@ -95,7 +93,6 @@
             </div>
         </section>
 
-        <!-- ================= 1. PARENT VIEW ================= -->
         <section id="view-parent" class="role-view space-y-6">
             <div class="bg-tuYellow/20 border border-tuYellow text-tuRed p-4 rounded-2xl flex items-start gap-3 shadow-sm">
                 <i data-lucide="bell-ring" class="w-6 h-6 mt-1 shrink-0 text-tuRed"></i>
@@ -125,7 +122,6 @@
                 </div>
 
                 <div id="shoppingBlock" class="space-y-4">
-                    <!-- เสื้อเด็ก -->
                     <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-4">
                         <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2">
                             <div><p class="font-bold text-xl">เสื้อเด็ก (150 บาท)</p><p class="text-sm text-slate-500">ตัวแรกระบบล็อค 1 ตัว (ขนาดมาตรฐาน)</p></div>
@@ -142,7 +138,6 @@
                         <div id="childItemsContainer" class="space-y-2"></div>
                     </div>
 
-                    <!-- เสื้อผู้ใหญ่ -->
                     <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-4">
                         <div class="flex justify-between items-center">
                             <p class="font-bold text-xl">เสื้อผู้ใหญ่ (280 บาท)</p>
@@ -151,7 +146,6 @@
                         <div id="adultItemsContainer" class="space-y-2"></div>
                     </div>
 
-                    <!-- สรุปยอดและ QR Code -->
                     <div class="mt-6 p-6 bg-tuYellow/10 rounded-3xl border border-tuYellow flex flex-col md:flex-row gap-6 items-center">
                         <div class="text-center flex-1 w-full">
                             <p class="text-slate-600 font-bold text-lg">ยอดชำระรอบนี้</p>
@@ -189,7 +183,6 @@
             </div>
         </section>
 
-        <!-- ================= SHARED DASHBOARD ================= -->
         <section id="sharedDashboard" class="hidden space-y-6">
             <h2 class="text-3xl font-bold text-tuRed">แดชบอร์ดภาพรวมโครงการ</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -203,7 +196,6 @@
             </div>
         </section>
 
-        <!-- ================= 2. FINANCE & ADMIN LIST VIEW ================= -->
         <section id="view-backend-list" class="role-view space-y-6 hidden">
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
                 <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-3">
@@ -244,7 +236,6 @@
             </div>
         </section>
 
-        <!-- ================= 4. ADMIN VIEW (Settings Only) ================= -->
         <section id="view-admin" class="role-view space-y-6 hidden">
             
             <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
@@ -287,7 +278,7 @@
             <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
                 <h3 class="text-2xl font-bold mb-4 text-tuRed"><i data-lucide="wallet" class="inline w-6 h-6"></i> ตั้งค่า PromptPay (Dynamic QR)</h3>
                 <div class="flex gap-2">
-                    <input type="text" id="adminPromptPay" class="border-2 border-slate-100 focus:border-tuRed focus:outline-none p-3 rounded-xl flex-1 text-lg font-bold" placeholder="เลขนิติบุคคล 13 หลัก">
+                    <input type="text" id="adminPromptPay" class="border-2 border-slate-100 focus:border-tuRed focus:outline-none p-3 rounded-xl flex-1 text-lg font-bold" placeholder="เลขนิติบุคคล 13 หลัก หรือ เบอร์โทร">
                     <button onclick="savePromptPay()" class="bg-tuYellow text-tuRed px-6 py-2 rounded-xl font-bold hover:bg-yellow-400">อัปเดต</button>
                 </div>
                 <p class="text-sm text-slate-500 mt-2">สำหรับสร้าง QR Code อัตโนมัติ (ปัจจุบันใช้: <span id="promptpayNumDisplay" class="font-bold"></span>)</p>
@@ -296,14 +287,12 @@
         </section>
     </main>
 
-    <!-- Footer -->
     <footer class="bg-slate-800 text-white text-center py-6 mt-auto no-print">
-        <p class="font-bold text-sm mb-2">ระบบสั่งซื้อเสื้อกีฬาสี โรงเรียนอนุบาลแห่งมหาวิทยาลัยธรรมศาสตร์ฯ</p>
+        <p class="font-bold text-sm mb-2">ระบบสั่งซื้อเสื้อกีฬาสี ปีการศึกษา 2569 <br>โรงเรียนอนุบาลแห่งมหาวิทยาลัยธรรมศาสตร์ฯ</br></p>
         <p class="text-xs text-slate-400 mb-2">พบปัญหาการใช้งาน ติดต่อ Line: @783ptdmp หรือ โทร 06-1594-1494</p>
         <a href="#" onclick="showLoginScreen()" class="text-slate-500 hover:text-white text-xs underline">สำหรับเจ้าหน้าที่ (Staff Login)</a>
     </footer>
 
-    <!-- Modal: ดูสลิป (Finance) -->
     <div id="slipModal" class="fixed inset-0 bg-black/80 z-[70] flex items-center justify-center hidden no-print py-10">
         <div class="bg-white w-[90%] max-w-md p-6 rounded-3xl flex flex-col items-center text-center relative max-h-full overflow-y-auto">
             <button onclick="document.getElementById('slipModal').classList.add('hidden')" class="absolute top-4 right-4 text-slate-400"><i data-lucide="x"></i></button>
@@ -318,7 +307,6 @@
         </div>
     </div>
 
-    <!-- Modal: เปลี่ยนรหัสผ่าน -->
     <div id="pwModal" class="fixed inset-0 bg-black/80 z-[70] flex items-center justify-center hidden no-print">
         <div class="bg-white w-[90%] max-w-sm p-6 rounded-3xl text-center">
             <h3 class="text-xl font-bold text-tuRed mb-2">เปลี่ยนรหัสผ่าน</h3>
@@ -336,7 +324,6 @@
         </div>
     </div>
 
-    <!-- Popup ยืนยันสั่งซื้อ -->
     <div id="successModal" class="fixed inset-0 bg-black/80 z-[70] flex items-center justify-center hidden no-print py-10">
         <div class="bg-white w-[90%] max-w-md p-8 rounded-3xl flex flex-col items-center text-center relative">
             <div class="w-20 h-20 bg-emerald-100 text-emerald-500 rounded-full flex items-center justify-center mb-4"><i data-lucide="check-circle" class="w-10 h-10"></i></div>
@@ -346,7 +333,6 @@
         </div>
     </div>
 
-    <!-- ================= พื้นที่สำหรับ Bulk Print (A5) ================= -->
     <div id="bulkPrintContainer" class="hidden"></div>
 
     <script>
@@ -880,13 +866,13 @@
 
                 container.innerHTML += `
                     <div class="print-page flex flex-col items-center justify-start text-center">
-                        <h2 class="font-bold text-2xl mb-3 text-slate-800">หลักฐานการโอนเงิน (สลิป)</h2>
+                        <h2 class="font-bold text-2xl mb-3 text-slate-800">หลักฐานการโอนเงิน สั่งซื้อเสื้อกีฬาสี ปีการศึกษา 2569</h2>
                         <div class="border-2 border-slate-200 p-2 mb-4 flex items-center justify-center bg-slate-50 w-[8cm] min-h-[10cm] rounded-xl overflow-hidden">
                             <img src="${st.latest_slip_url}" class="max-w-full max-h-[14cm] object-contain print-img" crossorigin="anonymous">
                         </div>
                         <div class="w-full text-center">
-                            <p class="font-bold text-xl text-slate-800">ชื่อ-สกุล: ${st.first_name} ${st.last_name} (${st.nickname || '-'}) ห้อง: ${st.grade_room}</p>
-                            <p class="text-lg text-slate-700 mt-2">${summaryText}</p>
+                            <p class="font-bold text-lg text-slate-800">ชื่อ-สกุล: ${st.first_name} ${st.last_name} (${st.nickname || '-'}) ห้อง: ${st.grade_room}</p>
+                            <p class="text-base text-slate-700 mt-1">${summaryText}</p>
                         </div>
                     </div>`;
             });
@@ -959,7 +945,7 @@
                     });
                 }
 
-                // รันลำดับเลขที่แยกตามห้อง (อิงจากเรียงตัวอักษร)
+                // รันลำดับเลขที่แยกตามห้อง
                 if(st.grade_room !== currentRoom) {
                     currentRoom = st.grade_room;
                     roomRunningNo = 1;
@@ -1081,30 +1067,3 @@
                         const cols = rows[i];
                         if(cols && cols.length >= 4) {
                             newStudents.push({
-                                first_name: String(cols[0] || '').trim(), 
-                                last_name: String(cols[1] || '').trim(), 
-                                nickname: String(cols[2] || '').trim(), 
-                                grade_room: String(cols[3] || '').trim()
-                            });
-                        }
-                    }
-                    if(newStudents.length === 0) return alert('รูปแบบข้อมูลใน Excel ไม่ถูกต้อง (ต้องมี ชื่อ, นามสกุล, ชื่อเล่น, ห้อง)');
-
-                    toggleLoader(true);
-                    await sbClient.from('students').insert(newStudents);
-                    toggleLoader(false);
-                    
-                    alert(`นำเข้าข้อมูล ${newStudents.length} รายการสำเร็จ!`);
-                    input.value = '';
-                    await loadAllStudentsForSearch();
-                    populateRoomsFilter(); 
-                } catch(error) {
-                    toggleLoader(false);
-                    alert("เกิดข้อผิดพลาดในการอ่านไฟล์ Excel: " + error.message);
-                }
-            };
-            reader.readAsArrayBuffer(file);
-        }
-    </script>
-</body>
-</html>

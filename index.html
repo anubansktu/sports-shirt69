@@ -37,6 +37,7 @@
         </div>
     </div>
 
+    <!-- Header -->
     <header class="bg-tuRed text-white shadow-md sticky top-0 z-40 border-b-4 border-tuYellow no-print">
         <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col lg:flex-row justify-between items-center gap-3">
             <div class="flex items-center gap-4">
@@ -59,6 +60,7 @@
 
     <main class="flex-grow max-w-6xl w-full mx-auto p-4 space-y-6 no-print">
         
+        <!-- 0. LOGIN VIEW -->
         <section id="view-login" class="role-view hidden max-w-md mx-auto mt-10">
             <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 text-center">
                 <div class="w-16 h-16 bg-red-50 text-tuRed rounded-full flex items-center justify-center mx-auto mb-4"><i data-lucide="lock" class="w-8 h-8"></i></div>
@@ -73,6 +75,7 @@
             </div>
         </section>
 
+        <!-- 1. PARENT VIEW -->
         <section id="view-parent" class="role-view space-y-6">
             <div class="bg-tuYellow/20 border border-tuYellow text-tuRed p-4 rounded-2xl flex items-start gap-3 shadow-sm">
                 <i data-lucide="bell-ring" class="w-6 h-6 mt-1 shrink-0 text-tuRed"></i>
@@ -102,6 +105,7 @@
                 </div>
 
                 <div id="shoppingBlock" class="space-y-4">
+                    <!-- เสื้อเด็ก -->
                     <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-4">
                         <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2">
                             <div><p class="font-bold text-xl">เสื้อเด็ก (150 บาท)</p><p class="text-sm text-slate-500">ตัวแรกระบบล็อค 1 ตัวตามที่ครูวัดไซส์</p></div>
@@ -118,6 +122,7 @@
                         <div id="childItemsContainer" class="space-y-2"></div>
                     </div>
 
+                    <!-- เสื้อผู้ใหญ่ -->
                     <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-4">
                         <div class="flex justify-between items-center">
                             <p class="font-bold text-xl">เสื้อผู้ใหญ่ (280 บาท)</p>
@@ -126,6 +131,7 @@
                         <div id="adultItemsContainer" class="space-y-2"></div>
                     </div>
 
+                    <!-- สรุปยอดและ QR Code -->
                     <div class="mt-6 p-6 bg-tuYellow/10 rounded-3xl border border-tuYellow flex flex-col md:flex-row gap-6 items-center">
                         <div class="text-center flex-1 w-full">
                             <p class="text-slate-600 font-bold text-lg">ยอดชำระรอบนี้</p>
@@ -160,52 +166,61 @@
             </div>
         </section>
 
+        <!-- ================= 2. TEACHER VIEW (ครูประจำชั้น) ================= -->
         <section id="view-teacher" class="role-view space-y-6 hidden">
             <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
-                <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 border-b-2 border-slate-50 pb-6">
                     <div>
-                        <h2 class="text-2xl font-bold text-tuRed">แดชบอร์ดครูประจำชั้น</h2>
-                        <p class="text-slate-500 font-bold">ห้องเรียน: <span id="teacherRoomDisplay" class="text-lg text-slate-800 border-b-2 border-tuYellow">กำลังโหลด...</span></p>
-                    </div>
-                    <div class="flex gap-4 text-center">
-                        <div class="bg-slate-50 px-4 py-2 rounded-xl border border-slate-100">
-                            <p class="text-xs text-slate-500 font-bold">ระบุไซส์แล้ว</p>
-                            <p class="text-xl font-bold text-emerald-600" id="teacherCountDone">0</p>
+                        <h2 class="text-2xl font-bold text-tuRed">แดชบอร์ดคุณครูประจำชั้น</h2>
+                        <div class="text-slate-600 font-bold mt-2 flex items-center gap-2">
+                            เลือกระบุไซส์ของห้อง: 
+                            <select id="teacherRoomSelect" onchange="loadTeacherDashboard()" class="text-lg text-tuRed border-b-2 border-tuRed bg-transparent focus:outline-none cursor-pointer pb-1">
+                                <option value="">-- กำลังโหลดห้องเรียน --</option>
+                            </select>
                         </div>
-                        <div class="bg-slate-50 px-4 py-2 rounded-xl border border-slate-100">
-                            <p class="text-xs text-slate-500 font-bold">ยังไม่ระบุไซส์</p>
-                            <p class="text-xl font-bold text-red-500" id="teacherCountPending">0</p>
+                    </div>
+                    <div class="flex gap-4 text-center w-full md:w-auto">
+                        <div class="bg-slate-50 px-5 py-3 rounded-xl border border-slate-200 flex-1">
+                            <p class="text-xs text-slate-500 font-bold mb-1">ระบุไซส์แล้ว</p>
+                            <p class="text-2xl font-bold text-emerald-600" id="teacherCountDone">0</p>
+                        </div>
+                        <div class="bg-slate-50 px-5 py-3 rounded-xl border border-slate-200 flex-1">
+                            <p class="text-xs text-slate-500 font-bold mb-1">ยังไม่ระบุไซส์</p>
+                            <p class="text-2xl font-bold text-red-500" id="teacherCountPending">0</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-yellow-50 text-amber-700 p-4 rounded-xl text-sm font-bold flex items-start gap-2 mb-4 border border-yellow-200">
-                    <i data-lucide="info" class="w-5 h-5 shrink-0"></i>
-                    <p>กรุณาระบุไซส์เสื้อให้เด็กแต่ละคน เมื่อครบแล้วให้กดปุ่ม "บันทึกและล็อคข้อมูล" เพื่อส่งให้พัสดุและการเงิน</p>
+                <div class="bg-yellow-50 text-amber-700 p-4 rounded-xl text-sm font-bold flex items-start gap-3 mb-6 border border-yellow-200 shadow-sm">
+                    <i data-lucide="info" class="w-5 h-5 shrink-0 mt-0.5"></i>
+                    <p>กรุณาเลือกไซส์เสื้อให้เด็กแต่ละคน ระบบจะบันทึกอัตโนมัติ เมื่อครบแล้วให้กดปุ่ม <span class="text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">บันทึกและล็อคข้อมูล</span> ด้านล่างสุด</p>
                 </div>
 
-                <div class="overflow-x-auto border rounded-xl">
-                    <table class="w-full text-left text-sm border-collapse">
+                <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                    <table class="w-full text-left text-sm border-collapse min-w-[500px]">
                         <thead>
                             <tr class="bg-slate-100 text-slate-600">
-                                <th class="p-3 w-16 text-center">เลขที่</th>
-                                <th class="p-3">ชื่อ-นามสกุล</th>
-                                <th class="p-3 w-48 text-center">ไซส์เสื้อที่ครูวัด</th>
-                                <th class="p-3 w-32 text-center">สถานะการชำระ</th>
+                                <th class="p-4 w-20 text-center border-b">เลขที่</th>
+                                <th class="p-4 border-b">ชื่อ-นามสกุล</th>
+                                <th class="p-4 w-48 text-center border-b">เลือกไซส์เสื้อ</th>
+                                <th class="p-4 w-32 text-center border-b">สถานะการชำระ</th>
                             </tr>
                         </thead>
-                        <tbody id="teacherTableBody" class="divide-y divide-slate-100"></tbody>
+                        <tbody id="teacherTableBody" class="divide-y divide-slate-100">
+                            <!-- Data injected here -->
+                        </tbody>
                     </table>
                 </div>
 
                 <div class="mt-6 flex justify-end">
-                    <button id="btnLockSize" onclick="lockTeacherSizes()" class="bg-emerald-600 text-white font-bold py-3 px-8 rounded-xl hover:bg-emerald-700 transition flex items-center gap-2 shadow-sm">
+                    <button id="btnLockSize" onclick="lockTeacherSizes()" class="bg-emerald-600 text-white font-bold py-3 px-8 rounded-xl hover:bg-emerald-700 transition flex items-center gap-2 shadow-md">
                         <i data-lucide="lock" class="w-5 h-5"></i> บันทึกและล็อคข้อมูล (เสร็จสิ้น)
                     </button>
                 </div>
             </div>
         </section>
 
+        <!-- DASHBOARD (Shared - เงิน, บริหาร, แอดมิน) -->
         <section id="sharedDashboard" class="hidden space-y-6">
             <h2 class="text-3xl font-bold text-tuRed">แดชบอร์ดภาพรวมโครงการ</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -219,6 +234,7 @@
             </div>
         </section>
 
+        <!-- 3. FINANCE & ADMIN LIST VIEW -->
         <section id="view-backend-list" class="role-view space-y-6 hidden">
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
                 <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-3">
@@ -260,15 +276,16 @@
             </div>
         </section>
 
+        <!-- 4. ADMIN VIEW (Settings Only) -->
         <section id="view-admin" class="role-view space-y-6 hidden">
             
             <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
                 <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
                     <h3 class="text-2xl font-bold text-tuRed"><i data-lucide="users" class="inline w-6 h-6"></i> จัดการรายชื่อนักเรียน</h3>
                     <div class="space-x-2 flex flex-wrap gap-2">
-                        <button onclick="downloadExcelTemplate()" class="bg-slate-200 text-slate-700 px-3 py-2 rounded-lg text-sm font-bold flex items-center gap-1 hover:bg-slate-300"><i data-lucide="download" class="w-4 h-4"></i> โหลด Template Excel</button>
+                        <button onclick="downloadExcelTemplate()" class="bg-slate-200 text-slate-700 px-3 py-2 rounded-lg text-sm font-bold flex items-center gap-1 hover:bg-slate-300"><i data-lucide="download" class="w-4 h-4"></i> โหลด Template เด็ก</button>
                         <label class="bg-emerald-600 text-white px-3 py-2 rounded-lg text-sm font-bold cursor-pointer flex items-center gap-1 hover:bg-emerald-700">
-                            <i data-lucide="file-spreadsheet" class="w-4 h-4"></i> นำเข้าไฟล์ Excel (.xlsx)
+                            <i data-lucide="file-spreadsheet" class="w-4 h-4"></i> นำเข้าไฟล์ Excel เด็ก (.xlsx)
                             <input type="file" accept=".xlsx, .xls" class="hidden" onchange="importExcel(this)">
                         </label>
                     </div>
@@ -281,6 +298,23 @@
                     <input type="text" id="addStNick" placeholder="ชื่อเล่น" class="border p-3 rounded-xl focus:border-tuRed focus:outline-none w-full">
                     <input type="text" id="addStRoom" placeholder="ห้อง (เช่น อ.1/1)" class="border p-3 rounded-xl focus:border-tuRed focus:outline-none w-full">
                     <button onclick="addStudentAdmin()" class="bg-tuRed text-white font-bold px-4 py-3 rounded-xl md:col-span-5 hover:bg-red-800">บันทึกเพิ่มนักเรียน</button>
+                </div>
+            </div>
+
+            <!-- เพิ่มส่วนนำเข้าครูประจำชั้น -->
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
+                    <h3 class="text-2xl font-bold text-tuRed"><i data-lucide="book-open" class="inline w-6 h-6"></i> จัดการข้อมูลครูประจำชั้น (ห้องละ 2 คน)</h3>
+                    <div class="space-x-2 flex flex-wrap gap-2">
+                        <button onclick="downloadTeacherTemplate()" class="bg-slate-200 text-slate-700 px-3 py-2 rounded-lg text-sm font-bold flex items-center gap-1 hover:bg-slate-300"><i data-lucide="download" class="w-4 h-4"></i> โหลด Template ครู</button>
+                        <label class="bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-bold cursor-pointer flex items-center gap-1 hover:bg-blue-700">
+                            <i data-lucide="upload" class="w-4 h-4"></i> นำเข้าไฟล์ Excel ครู (.xlsx)
+                            <input type="file" accept=".xlsx, .xls" class="hidden" onchange="importTeacherExcel(this)">
+                        </label>
+                    </div>
+                </div>
+                <div id="adminTeacherList" class="overflow-y-auto max-h-40 border border-slate-200 rounded-xl p-2 bg-slate-50 text-sm">
+                    <!-- รายชื่อครูจะโชว์ที่นี่ -->
                 </div>
             </div>
 
@@ -306,7 +340,7 @@
                     <input type="text" id="adminPromptPay" class="border-2 border-slate-100 focus:border-tuRed focus:outline-none p-3 rounded-xl flex-1 text-lg font-bold" placeholder="เลขนิติบุคคล 13 หลัก">
                     <button onclick="savePromptPay()" class="bg-tuYellow text-tuRed px-6 py-2 rounded-xl font-bold hover:bg-yellow-400">อัปเดต</button>
                 </div>
-                <p class="text-sm text-slate-500 mt-2">สำหรับสร้าง QR Code อัตโนมัติ (ปัจจุบันใช้: <span id="promptpayNumDisplay" class="font-bold"></span>)</p>
+                <p class="text-sm text-slate-500 mt-2">ปัจจุบันใช้: <span id="promptpayNumDisplay" class="font-bold"></span></p>
             </div>
             
             <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
@@ -320,12 +354,14 @@
         </section>
     </main>
 
+    <!-- Footer -->
     <footer class="bg-slate-800 text-white text-center py-6 mt-auto no-print">
         <p class="font-bold text-sm mb-2">ระบบสั่งซื้อเสื้อกีฬาสี ปีการศึกษา 2569 <br>โรงเรียนอนุบาลแห่งมหาวิทยาลัยธรรมศาสตร์ฯ</p>
         <p class="text-xs text-slate-400 mb-2">พบปัญหาการใช้งาน ติดต่อ Line: @783ptdmp หรือ โทร 06-1594-1494</p>
         <a href="#" onclick="showLoginScreen()" class="text-slate-500 hover:text-white text-xs underline">สำหรับเจ้าหน้าที่ (Staff Login)</a>
     </footer>
 
+    <!-- Modals -->
     <div id="slipModal" class="fixed inset-0 bg-black/80 z-[70] flex items-center justify-center hidden no-print py-10">
         <div class="bg-white w-[90%] max-w-md p-6 rounded-3xl flex flex-col items-center text-center relative max-h-full overflow-y-auto">
             <button onclick="document.getElementById('slipModal').classList.add('hidden')" class="absolute top-4 right-4 text-slate-400"><i data-lucide="x"></i></button>
@@ -338,11 +374,19 @@
         </div>
     </div>
 
+    <!-- Modal: เปลี่ยนรหัสผ่าน -->
     <div id="pwModal" class="fixed inset-0 bg-black/80 z-[70] flex items-center justify-center hidden no-print">
         <div class="bg-white w-[90%] max-w-sm p-6 rounded-3xl text-center">
             <h3 class="text-xl font-bold text-tuRed mb-2">เปลี่ยนรหัสผ่าน</h3>
             <p class="text-sm text-slate-500 mb-4">(แอดมินหรือครูที่ล็อคอินอยู่)</p>
             <input type="hidden" id="pwTargetUser">
+            
+            <select id="pwRoleSelect" class="w-full p-3 border rounded-xl mb-4 font-bold bg-slate-50 hidden">
+                <option value="admin">บัญชี: แอดมิน (admin)</option>
+                <option value="finance">บัญชี: การเงิน (finance)</option>
+                <option value="boss">บัญชี: ผู้บริหาร (boss)</option>
+            </select>
+            
             <input type="password" id="newPwInput" placeholder="รหัสผ่านใหม่" class="w-full p-3 border rounded-xl mb-4">
             <div class="flex gap-2">
                 <button onclick="changePassword()" class="flex-1 bg-tuRed text-white py-2 rounded-xl font-bold">บันทึก</button>
@@ -351,6 +395,7 @@
         </div>
     </div>
 
+    <!-- Popup ยืนยันสั่งซื้อ -->
     <div id="successModal" class="fixed inset-0 bg-black/80 z-[70] flex items-center justify-center hidden no-print py-10">
         <div class="bg-white w-[90%] max-w-md p-8 rounded-3xl flex flex-col items-center text-center relative">
             <div class="w-20 h-20 bg-emerald-100 text-emerald-500 rounded-full flex items-center justify-center mb-4"><i data-lucide="check-circle" class="w-10 h-10"></i></div>
@@ -360,6 +405,7 @@
         </div>
     </div>
 
+    <!-- Bulk Print Container -->
     <div id="bulkPrintContainer" class="hidden"></div>
 
     <script>
@@ -371,6 +417,7 @@
         let loggedInUsername = null;
         let availableSizes = { adult: [], child: [] };
         let allStudents = []; 
+        let roomDetailsList = []; // เก็บรายชื่อครู
         let backendDataList = [];
         let rawBackendDataList = []; 
         let teacherStudentList = [];
@@ -394,6 +441,7 @@
             lucide.createIcons();
             await fetchShirtSizes();
             await loadGlobalSettings();
+            await loadRoomDetails();
             await loadAllStudentsForSearch();
             populateRoomsFilter();
             returnToParent(); 
@@ -418,6 +466,7 @@
         }
 
         function copyBankAcc() { navigator.clipboard.writeText("4750364754"); alert('คัดลอกเลขบัญชีธนาคารกรุงไทยเรียบร้อยแล้ว'); }
+        
         async function downloadQR() { 
             const a = document.createElement('a'); 
             a.href = document.getElementById('qrImage').src; 
@@ -437,17 +486,27 @@
             if(data && data.length > 0) promptpayNo = data[0].setting_value;
             if(document.getElementById('adminPromptPay')) document.getElementById('adminPromptPay').value = promptpayNo;
         }
+        
+        async function loadRoomDetails() {
+            const { data } = await sbClient.from('room_details').select('*');
+            roomDetailsList = data || [];
+        }
 
         function populateRoomsFilter() {
             const sel1 = document.getElementById('finRoomFilter');
             const sel2 = document.getElementById('adminUnlockRoom');
-            if(sel1) sel1.innerHTML = '';
+            const sel3 = document.getElementById('teacherRoomSelect');
+            
+            if(sel1) sel1.innerHTML = '<option value="">ดูทุกห้องเรียน</option>';
             if(sel2) sel2.innerHTML = '<option value="">เลือกห้องที่ต้องการปลดล็อค...</option>';
+            if(sel3) sel3.innerHTML = '<option value="">-- เลือกห้องเรียน --</option>';
+
             const rooms = [...new Set(allStudents.map(st => st.grade_room).filter(Boolean))].sort();
             if(rooms.length > 0) { 
                 rooms.forEach(r => {
                     if(sel1) sel1.innerHTML += `<option value="${r}">${r}</option>`;
                     if(sel2) sel2.innerHTML += `<option value="${r}">${r}</option>`;
+                    if(sel3) sel3.innerHTML += `<option value="${r}">${r}</option>`;
                 });
             } else { 
                 if(sel1) sel1.innerHTML = '<option value="">ไม่มีข้อมูลห้อง</option>'; 
@@ -469,6 +528,17 @@
             checkPhase();
         }
 
+        function requestRoleSwitch(role) {
+            document.querySelectorAll('.role-view').forEach(v => v.classList.add('hidden'));
+            document.getElementById('sharedDashboard').classList.add('hidden');
+
+            if (role === 'parent') { document.getElementById('view-parent').classList.remove('hidden'); checkPhase(); return; }
+            if (role === 'finance') { document.getElementById('sharedDashboard').classList.remove('hidden'); document.getElementById('view-backend-list').classList.remove('hidden'); loadBackendData(); } 
+            else if (role === 'boss') { document.getElementById('sharedDashboard').classList.remove('hidden'); loadBackendData(); } 
+            else if (role === 'admin') { document.getElementById('sharedDashboard').classList.remove('hidden'); document.getElementById('view-backend-list').classList.remove('hidden'); document.getElementById('view-admin').classList.remove('hidden'); loadBackendData(); loadAdminSettings(); }
+            else if (role === 'teacher') { document.getElementById('view-teacher').classList.remove('hidden'); }
+        }
+
         async function doLogin() {
             const u = document.getElementById('txtUsername').value.trim().toLowerCase(), p = document.getElementById('txtPassword').value.trim();
             if(!u || !p) return alert('กรุณากรอกข้อมูลให้ครบถ้วน');
@@ -488,6 +558,7 @@
 
                 if(currentRoleUser === 'admin') { 
                     document.getElementById('btnChangePw').classList.remove('hidden'); 
+                    document.getElementById('pwRoleSelect').classList.remove('hidden');
                     document.getElementById('sharedDashboard').classList.remove('hidden');
                     document.getElementById('view-backend-list').classList.remove('hidden');
                     document.getElementById('view-admin').classList.remove('hidden');
@@ -504,12 +575,27 @@
                 }
                 else if(currentRoleUser === 'teacher') { 
                     document.getElementById('btnChangePw').classList.remove('hidden'); 
+                    document.getElementById('pwRoleSelect').classList.add('hidden'); 
                     document.getElementById('view-teacher').classList.remove('hidden'); 
+                    
                     let match = loggedInUsername.match(/teacher(\d)(\d)/);
-                    if(match) teacherAssignedRoom = `อ.${match[1]}/${match[2]}`;
-                    else teacherAssignedRoom = prompt("กรุณาระบุห้องเรียนของคุณ (เช่น อ.1/1):") || "ไม่ระบุ";
-                    document.getElementById('teacherRoomDisplay').innerText = teacherAssignedRoom;
-                    loadTeacherDashboard(); 
+                    let guessedRoom = "";
+                    if(match) {
+                        let r1 = `อ.${match[1]}/${match[2]}`;
+                        let r2 = `อนุบาล ${match[1]}/${match[2]}`;
+                        let r3 = `อนุบาล${match[1]}/${match[2]}`;
+                        let selectEl = document.getElementById('teacherRoomSelect');
+                        let options = Array.from(selectEl.options).map(o => o.value);
+                        if(options.includes(r1)) guessedRoom = r1;
+                        else if(options.includes(r2)) guessedRoom = r2;
+                        else if(options.includes(r3)) guessedRoom = r3;
+                    }
+                    if(guessedRoom) {
+                        document.getElementById('teacherRoomSelect').value = guessedRoom;
+                        loadTeacherDashboard();
+                    } else {
+                        document.getElementById('teacherTableBody').innerHTML = '<tr><td colspan="4" class="text-center p-4 text-slate-500">กรุณาเลือกห้องเรียนของคุณที่ด้านบน</td></tr>';
+                    }
                 }
             } else alert('ชื่อผู้ใช้งาน หรือรหัสผ่านไม่ถูกต้อง');
         }
@@ -523,25 +609,42 @@
 
         async function changePassword() {
             const nw = document.getElementById('newPwInput').value.trim();
-            const u = document.getElementById('pwTargetUser').value; 
+            let u = document.getElementById('pwTargetUser').value; 
+            
+            if(currentRoleUser === 'admin') { u = document.getElementById('pwRoleSelect').value; }
+
             if(!nw) return alert('กรุณากรอกรหัสผ่านใหม่');
             toggleLoader(true); await sbClient.from('staff_users').update({password: nw}).eq('username', u); toggleLoader(false);
-            alert('เปลี่ยนรหัสผ่านสำเร็จแล้ว'); document.getElementById('newPwInput').value = ''; document.getElementById('pwModal').classList.add('hidden');
+            alert(`เปลี่ยนรหัสผ่านของไอดี ${u} สำเร็จแล้ว`); document.getElementById('newPwInput').value = ''; document.getElementById('pwModal').classList.add('hidden');
         }
 
-        // ================= TEACHER VIEW =================
+        // ================= TEACHER VIEW (ครูระบุไซส์) =================
         async function loadTeacherDashboard() {
+            teacherAssignedRoom = document.getElementById('teacherRoomSelect').value;
+            const tbody = document.getElementById('teacherTableBody');
+            
+            if(!teacherAssignedRoom) {
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center p-4 text-slate-500">กรุณาเลือกห้องเรียนของคุณที่ด้านบน</td></tr>';
+                document.getElementById('teacherCountDone').innerText = '0';
+                document.getElementById('teacherCountPending').innerText = '0';
+                return;
+            }
+
             toggleLoader(true);
             const { data } = await sbClient.from('students').select('*').eq('grade_room', teacherAssignedRoom).order('student_no', { ascending: true, nullsFirst: false }).order('first_name');
             teacherStudentList = data || [];
             
             let isLocked = false;
             let countDone = 0; let countPending = 0;
-            const tbody = document.getElementById('teacherTableBody');
             tbody.innerHTML = '';
 
             let childOptions = '<option value="">-- เลือกไซส์ --</option>';
             availableSizes.child.forEach(s => childOptions += `<option value="${s.size_name}">${s.size_name}</option>`);
+
+            if(teacherStudentList.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center p-4 text-slate-500">ไม่พบรายชื่อนักเรียนในห้องนี้</td></tr>';
+                toggleLoader(false); return;
+            }
 
             teacherStudentList.forEach((st, idx) => {
                 if(st.size_locked) isLocked = true;
@@ -551,14 +654,14 @@
                 
                 tbody.innerHTML += `
                     <tr class="hover:bg-slate-50 border-b border-slate-100">
-                        <td class="p-3 text-center font-bold">${st.student_no || '-'}</td>
-                        <td class="p-3 font-medium">${st.first_name} ${st.last_name} <span class="text-xs text-slate-400">(${st.nickname||'-'})</span></td>
-                        <td class="p-3 text-center">
-                            <select id="tsize_${st.id}" onchange="saveSingleTeacherSize(${st.id}, this.value)" class="border border-slate-300 p-2 rounded-lg font-bold w-full focus:border-tuRed" ${isLocked ? 'disabled' : ''}>
+                        <td class="p-4 text-center font-bold text-slate-500">${st.student_no || '-'}</td>
+                        <td class="p-4 font-bold text-slate-700">${st.first_name} ${st.last_name} <span class="text-xs text-slate-400 font-normal">(${st.nickname||'-'})</span></td>
+                        <td class="p-4 text-center">
+                            <select id="tsize_${st.id}" onchange="saveSingleTeacherSize(${st.id}, this.value)" class="border-2 border-slate-200 p-2.5 rounded-xl font-bold w-full focus:border-tuRed bg-white" ${isLocked ? 'disabled' : ''}>
                                 ${childOptions}
                             </select>
                         </td>
-                        <td class="p-3 text-center"><span class="px-2 py-1 rounded-full text-xs font-bold ${badge}">${st.payment_status}</span></td>
+                        <td class="p-4 text-center"><span class="px-3 py-1.5 rounded-full text-xs font-bold ${badge}">${st.payment_status}</span></td>
                     </tr>
                 `;
             });
@@ -600,7 +703,6 @@
             toggleLoader(true);
             const idsToLock = teacherStudentList.map(st => st.id);
             if(idsToLock.length > 0) {
-                // อัปเดตทีละคนเนื่องจากบาง API ไม่รองรับ in() 
                 for(let id of idsToLock) { await sbClient.from('students').update({size_locked: true}).eq('id', id); }
             }
             await loadAllStudentsForSearch(); await loadTeacherDashboard(); toggleLoader(false);
@@ -647,8 +749,19 @@
             document.getElementById('searchKey').value = '';
             document.getElementById('orderFormBlock').classList.remove('hidden');
             let studentNoStr = st.student_no ? ` (เลขที่ ${st.student_no})` : '';
+            
+            // ดึงชื่อครูประจำชั้นมาโชว์
+            let roomInfo = roomDetailsList.find(r => r.grade_room === st.grade_room);
+            let teacherText = "";
+            if (roomInfo) {
+                let t1 = roomInfo.teacher1_nick ? `ครู${roomInfo.teacher1_nick}` : roomInfo.teacher1_name;
+                let t2 = roomInfo.teacher2_nick ? `ครู${roomInfo.teacher2_nick}` : roomInfo.teacher2_name;
+                let tArr = [t1, t2].filter(Boolean);
+                if(tArr.length > 0) teacherText = ` (ครูประจำชั้น: ${tArr.join(', ')})`;
+            }
+
             document.getElementById('selectedStudentName').innerText = `นักเรียน: ${st.first_name} ${st.last_name} (${st.nickname})`;
-            document.getElementById('selectedStudentRoom').innerText = `ห้อง: ${st.grade_room}${studentNoStr}`;
+            document.getElementById('selectedStudentRoom').innerText = `ห้อง: ${st.grade_room}${studentNoStr}${teacherText}`;
             
             const b = document.getElementById('badgeStatus');
             b.innerText = st.payment_status;
@@ -664,9 +777,9 @@
             const tSize = document.getElementById('teacherSizeDisplay');
             if(st.default_size) {
                 tSize.innerText = st.default_size;
-                tSize.className = "text-tuRed text-xl font-bold bg-red-50 px-3 py-1 rounded-lg";
+                tSize.className = "text-tuRed text-xl font-bold bg-red-50 px-3 py-1 rounded-lg border border-red-200";
             } else {
-                tSize.innerText = "รอคุณครูระบุ";
+                tSize.innerText = "รอคุณครูระบุไซส์ให้";
                 tSize.className = "text-amber-500 text-base font-bold bg-amber-50 px-3 py-1 rounded-lg border border-amber-200";
             }
 
@@ -759,9 +872,8 @@
         // ================= BACKEND DASHBOARD & LIST =================
         async function loadBackendData() {
             toggleLoader(true); const room = document.getElementById('finRoomFilter').value;
-            if(!room) { toggleLoader(false); return; } 
-            
-            let q = sbClient.from('students').select('*').eq('grade_room', room).order('student_no', { ascending: true, nullsFirst: false }).order('first_name');
+            let q = sbClient.from('students').select('*').order('student_no', { ascending: true, nullsFirst: false }).order('first_name');
+            if(room && room !== 'ALL') q = q.eq('grade_room', room);
             const { data } = await q; rawBackendDataList = data || [];
             updateDashboard(allStudents); renderBackendTable(); toggleLoader(false);
         }
@@ -926,6 +1038,22 @@
             const { data: ph } = await sbClient.from('phase_settings').select('*').order('grade_level');
             const pCont = document.getElementById('adminPhaseContainer'); pCont.innerHTML = '';
             ph?.forEach(p => pCont.innerHTML += `<div class="flex gap-2 items-center bg-slate-50 p-3 rounded-xl border border-slate-100"><span class="font-bold w-10 text-center text-tuRed">${p.grade_level}</span><input type="datetime-local" class="border border-slate-200 p-2 rounded-lg flex-1 text-sm focus:outline-none focus:border-tuRed" id="st_${p.id}" value="${p.start_date.slice(0,16)}"> <span class="text-xs text-slate-400">ถึง</span> <input type="datetime-local" class="border border-slate-200 p-2 rounded-lg flex-1 text-sm focus:outline-none focus:border-tuRed" id="en_${p.id}" value="${p.end_date.slice(0,16)}"><button onclick="savePhase(${p.id})" class="bg-tuRed hover:bg-red-800 text-white px-4 py-2 rounded-lg text-sm font-bold">เซฟ</button></div>`);
+            
+            // Render Teacher List in Admin
+            const tList = document.getElementById('adminTeacherList');
+            tList.innerHTML = '';
+            if (roomDetailsList.length > 0) {
+                let tableHTML = '<table class="w-full text-left"><thead><tr class="text-slate-500 border-b"><th class="pb-2">ห้อง</th><th class="pb-2">ครูคนที่ 1</th><th class="pb-2">ครูคนที่ 2</th></tr></thead><tbody>';
+                roomDetailsList.forEach(r => {
+                    let t1 = r.teacher1_name ? `${r.teacher1_name} (${r.teacher1_nick})` : '-';
+                    let t2 = r.teacher2_name ? `${r.teacher2_name} (${r.teacher2_nick})` : '-';
+                    tableHTML += `<tr><td class="py-2 font-bold">${r.grade_room}</td><td class="py-2">${t1}</td><td class="py-2">${t2}</td></tr>`;
+                });
+                tableHTML += '</tbody></table>';
+                tList.innerHTML = tableHTML;
+            } else {
+                tList.innerHTML = '<p class="text-slate-400 p-2">ยังไม่มีข้อมูลครูประจำชั้น กรุณานำเข้าจากไฟล์ Excel</p>';
+            }
             lucide.createIcons();
         }
 
@@ -964,9 +1092,19 @@
             if(document.getElementById('promptpayNumDisplay')) document.getElementById('promptpayNumDisplay').innerText = val; toggleLoader(false); alert('อัปเดตช่องทางรับเงินเรียบร้อยแล้ว');
         }
 
+        // ================= CSV Import / Excel (Students & Teachers) =================
         function downloadExcelTemplate() {
             const ws_data = [["student_no", "first_name", "last_name", "nickname", "grade_room"], [1, "สมหมาย", "ใจดี", "เต้", "อ.1/1"], [2, "มานี", "มีตา", "มิน", "อ.1/1"]];
             const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(ws_data), "Students"); XLSX.writeFile(wb, "Student_Template.xlsx");
+        }
+
+        function downloadTeacherTemplate() {
+            const ws_data = [
+                ["grade_room", "teacher1_name", "teacher1_nick", "teacher2_name", "teacher2_nick"], 
+                ["อ.1/1", "สมหญิง พิทักษ์", "หญิง", "สมชาย ชูใจ", "ชาย"], 
+                ["อ.1/2", "สมรักษ์ พิทักษ์", "รักษ์", "", ""]
+            ];
+            const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(ws_data), "Teachers"); XLSX.writeFile(wb, "Teacher_Template.xlsx");
         }
 
         function importExcel(input) {
@@ -976,15 +1114,66 @@
                     const data = new Uint8Array(e.target.result); const workbook = XLSX.read(data, {type: 'array'});
                     const rows = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], {header: 1}); 
                     if(rows.length <= 1) return alert('ไฟล์ว่างเปล่า');
+                    
                     let newStudents = [];
                     for(let i=1; i<rows.length; i++) { 
-                        if(rows[i] && rows[i].length >= 5) {
-                            newStudents.push({ student_no: parseInt(rows[i][0]) || null, first_name: String(rows[i][1] || '').trim(), last_name: String(rows[i][2] || '').trim(), nickname: String(rows[i][3] || '').trim(), grade_room: String(rows[i][4] || '').trim() });
+                        let cols = rows[i];
+                        if(!cols || cols.length < 4) continue; // ข้ามบรรทัดที่ว่าง
+
+                        let sno = parseInt(cols[0]);
+                        let fname, lname, nick, room;
+
+                        // ระบบเดาว่าไฟล์มีหรือไม่มีเลขที่ โดยเช็คว่า col 0 เป็นตัวเลขไหม
+                        if(!isNaN(sno)) { 
+                            fname = String(cols[1] || '').trim(); lname = String(cols[2] || '').trim(); nick = String(cols[3] || '').trim(); room = String(cols[4] || '').trim();
+                        } else { 
+                            sno = null; fname = String(cols[0] || '').trim(); lname = String(cols[1] || '').trim(); nick = String(cols[2] || '').trim(); room = String(cols[3] || '').trim();
+                        }
+
+                        if(fname && lname && room) {
+                            newStudents.push({ student_no: sno, first_name: fname, last_name: lname, nickname: nick, grade_room: room });
                         }
                     }
                     if(newStudents.length === 0) return alert('ข้อมูลผิดรูปแบบ (ต้องมี เลขที่, ชื่อ, สกุล, ชื่อเล่น, ห้อง)');
+                    
                     toggleLoader(true); await sbClient.from('students').insert(newStudents); toggleLoader(false);
-                    alert(`นำเข้าสำเร็จ ${newStudents.length} รายการ!`); input.value = ''; await loadAllStudentsForSearch(); populateRoomsFilter(); 
+                    alert(`นำเข้าเด็กสำเร็จ ${newStudents.length} รายการ!\nสามารถไปดูรายชื่อได้ที่เมนู "การเงิน" แล้วเลือกห้องเรียนครับ`); 
+                    input.value = ''; await loadAllStudentsForSearch(); populateRoomsFilter(); 
+                } catch(error) { toggleLoader(false); alert("Error: " + error.message); }
+            }; reader.readAsArrayBuffer(file);
+        }
+
+        function importTeacherExcel(input) {
+            const file = input.files[0]; if(!file) return; const reader = new FileReader();
+            reader.onload = async (e) => {
+                try {
+                    const data = new Uint8Array(e.target.result); const workbook = XLSX.read(data, {type: 'array'});
+                    const rows = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], {header: 1}); 
+                    if(rows.length <= 1) return alert('ไฟล์ว่างเปล่า');
+                    
+                    let newTeachers = [];
+                    for(let i=1; i<rows.length; i++) { 
+                        let cols = rows[i];
+                        if(!cols || cols.length < 1) continue; 
+                        let room = String(cols[0] || '').trim();
+                        if(!room) continue;
+                        newTeachers.push({
+                            grade_room: room,
+                            teacher1_name: String(cols[1] || '').trim() || null,
+                            teacher1_nick: String(cols[2] || '').trim() || null,
+                            teacher2_name: String(cols[3] || '').trim() || null,
+                            teacher2_nick: String(cols[4] || '').trim() || null
+                        });
+                    }
+                    if(newTeachers.length === 0) return alert('ข้อมูลผิดรูปแบบ');
+                    
+                    toggleLoader(true); 
+                    const { error } = await sbClient.from('room_details').upsert(newTeachers, { onConflict: 'grade_room' });
+                    toggleLoader(false);
+                    if(error) throw error;
+                    
+                    alert(`นำเข้าข้อมูลครูสำเร็จ ${newTeachers.length} ห้อง!`); 
+                    input.value = ''; await loadRoomDetails(); await loadAdminSettings(); 
                 } catch(error) { toggleLoader(false); alert("Error: " + error.message); }
             }; reader.readAsArrayBuffer(file);
         }

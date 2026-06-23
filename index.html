@@ -50,7 +50,6 @@
                 </div>
             </div>
             
-            <!-- เมนูของ Staff (ซ่อนปุ่มสลับหน้า โชว์แค่ ID และปุ่มออก) -->
             <div id="staffNav" class="hidden items-center gap-2 flex-wrap justify-center">
                 <div id="userInfoDisplay" class="text-sm font-bold text-yellow-200 mr-2 border-r border-red-400 pr-3"></div>
                 <button id="btnChangePw" onclick="document.getElementById('pwModal').classList.remove('hidden')" class="hidden bg-white/20 text-white px-3 py-1.5 rounded-lg text-sm font-bold hover:bg-white/30" title="เปลี่ยนรหัสผ่าน"><i data-lucide="key" class="w-4 h-4 inline"></i></button>
@@ -102,25 +101,26 @@
                 </div>
                 
                 <div id="reorderAlert" class="bg-blue-50 border border-blue-200 text-blue-700 p-4 rounded-2xl mb-6 hidden font-bold">
-                    <i data-lucide="info" class="inline w-5 h-5 mb-1"></i> นักเรียนคนนี้เคยชำระเงินแล้ว (ยอดเดิมสะสม <span id="oldTotal">0</span> บ.) หากต้องการสั่งซื้อเพิ่มสามารถทำรายการต่อได้เลย (ระบบจะบวกยอดใหม่เข้าไป)
+                    <i data-lucide="info" class="inline w-5 h-5 mb-1"></i> นักเรียนคนนี้เคยชำระเงินแล้ว (ยอดเดิมสะสม <span id="oldTotal">0</span> บ.) หากต้องการสั่งซื้อเพิ่มสามารถทำรายการต่อได้เลย
                 </div>
 
                 <div id="shoppingBlock" class="space-y-4">
                     <!-- เสื้อเด็ก -->
                     <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-4">
                         <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2">
-                            <div><p class="font-bold text-xl">เสื้อเด็ก (150 บาท)</p><p class="text-sm text-slate-500">ตัวแรกระบบล็อค 1 ตัวตามที่ครูวัดไซส์</p></div>
-                            <button onclick="addChildRow()" class="text-tuRed font-bold flex items-center justify-center gap-1 bg-red-50 px-3 py-2 rounded-lg border border-red-100 hover:bg-red-100"><i data-lucide="plus-circle" class="w-4 h-4"></i> ซื้อเสื้อเด็กตัวที่ 2 เพิ่ม (ระบุไซส์)</button>
+                            <div>
+                                <p class="font-bold text-xl">เสื้อเด็ก (150 บาท)</p>
+                                <p class="text-sm text-slate-500">ระบบสั่งซื้อล็อคไว้ที่ 1 ตัว (ไซส์ตามที่คุณครูระบุ)</p>
+                            </div>
                         </div>
                         
                         <div class="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-                            <span class="font-bold text-slate-600">เสื้อเด็ก (ตัวหลัก) - ไซส์: <span id="teacherSizeDisplay" class="text-tuRed text-xl font-bold bg-red-50 px-3 py-1 rounded-lg">รอครูระบุ</span></span>
+                            <span class="font-bold text-slate-600">เสื้อเด็ก - ไซส์: <span id="teacherSizeDisplay" class="text-tuRed text-xl font-bold bg-red-50 px-3 py-1 rounded-lg">รอครูระบุ</span></span>
                             <div class="flex items-center gap-2 bg-slate-50 px-4 py-1 rounded-lg border border-slate-100">
                                 <span class="font-bold text-2xl text-tuRed w-8 text-center" id="baseChildQty">1</span> 
                                 <span class="text-slate-500 font-bold">ตัว</span>
                             </div>
                         </div>
-                        <div id="childItemsContainer" class="space-y-2"></div>
                     </div>
 
                     <!-- เสื้อผู้ใหญ่ -->
@@ -333,7 +333,7 @@
                     <h3 class="text-2xl font-bold text-tuRed"><i data-lucide="shirt" class="inline w-6 h-6"></i> จัดการไซส์เสื้อ</h3>
                     <button onclick="addShirtSize()" class="bg-tuRed text-white px-4 py-2 rounded-xl font-bold text-sm">+ เพิ่มไซส์</button>
                 </div>
-                <div class="mb-2 font-bold text-slate-600 border-b pb-2">เสื้อเด็ก (ซื้อเพิ่ม/ให้ครูเลือก)</div>
+                <div class="mb-2 font-bold text-slate-600 border-b pb-2">เสื้อเด็ก (ให้ครูเลือก)</div>
                 <div id="adminChildSizes" class="flex gap-2 flex-wrap mb-4"></div>
                 <div class="mb-2 font-bold text-slate-600 border-b pb-2">เสื้อผู้ใหญ่ (S-3XL)</div>
                 <div id="adminAdultSizes" class="flex gap-2 flex-wrap"></div>
@@ -560,7 +560,7 @@
             if (role === 'finance') { document.getElementById('sharedDashboard').classList.remove('hidden'); document.getElementById('view-backend-list').classList.remove('hidden'); loadBackendData(); } 
             else if (role === 'boss') { document.getElementById('sharedDashboard').classList.remove('hidden'); loadBackendData(); } 
             else if (role === 'admin') { document.getElementById('sharedDashboard').classList.remove('hidden'); document.getElementById('view-backend-list').classList.remove('hidden'); document.getElementById('view-admin').classList.remove('hidden'); loadBackendData(); loadAdminSettings(); }
-            else if (role === 'teacher') { document.getElementById('view-teacher').classList.remove('hidden'); loadTeacherDashboard(); }
+            else if (role === 'teacher') { document.getElementById('view-teacher').classList.remove('hidden'); }
         }
 
         async function doLogin() {
@@ -608,7 +608,6 @@
                     } else {
                         teacherAssignedRoom = prompt("กรุณาระบุห้องเรียนของคุณ (เช่น อ.1/1):") || "ไม่ระบุ";
                     }
-                    document.getElementById('teacherRoomDisplay').innerText = teacherAssignedRoom;
                     loadTeacherDashboard();
                 }
             } else alert('ชื่อผู้ใช้งาน หรือรหัสผ่านไม่ถูกต้อง');
@@ -641,7 +640,8 @@
                 return;
             }
 
-            // แสดงชื่อครูประจำชั้น
+            document.getElementById('teacherRoomDisplay').innerText = teacherAssignedRoom;
+
             let roomInfo = roomDetailsList.find(r => r.grade_room === teacherAssignedRoom);
             let teacherText = "-";
             if (roomInfo) {
@@ -804,12 +804,11 @@
                 tSize.innerText = st.default_size;
                 tSize.className = "text-tuRed text-xl font-bold bg-red-50 px-3 py-1 rounded-lg border border-red-200";
             } else {
-                tSize.innerText = "รอคุณครูระบุไซส์ให้";
-                tSize.className = "text-amber-500 text-base font-bold bg-amber-50 px-3 py-1 rounded-lg border border-amber-200";
+                tSize.innerText = "รอคุณครูระบุให้ (โอนเงินก่อนได้เลย)";
+                tSize.className = "text-amber-500 text-sm font-bold bg-amber-50 px-3 py-1 rounded-lg border border-amber-200";
             }
 
             document.getElementById('shoppingBlock').classList.remove('hidden');
-            document.getElementById('childItemsContainer').innerHTML = '';
             document.getElementById('adultItemsContainer').innerHTML = '';
             calcTotal();
         }
@@ -823,15 +822,6 @@
             else box.innerText = `❌ ขณะนี้ระบบปิดรับคำสั่งซื้อชั่วคราว`;
         }
 
-        function addChildRow() {
-            const div = document.createElement('div');
-            div.className = "flex gap-2 items-center child-row mt-2";
-            let opts = availableSizes.child.map(s => `<option value="${s.size_name}">${s.size_name}</option>`).join('');
-            div.innerHTML = `<select class="child-size p-3 rounded-xl border border-slate-200 bg-white flex-1 font-bold text-sm">${opts}</select>
-                             <input type="number" class="child-qty w-16 p-3 rounded-xl border border-slate-200 text-center font-bold" value="1" min="1" onchange="calcTotal()"><button onclick="this.parentElement.remove(); calcTotal()" class="text-red-500 bg-red-50 p-3 rounded-xl hover:bg-red-100"><i data-lucide="trash-2" class="w-4 h-4"></i></button>`;
-            document.getElementById('childItemsContainer').appendChild(div); lucide.createIcons(); calcTotal();
-        }
-
         function addAdultRow() {
             const div = document.createElement('div');
             div.className = "flex gap-2 items-center adult-row";
@@ -843,7 +833,6 @@
 
         function calcTotal() {
             let total = parseInt(document.getElementById('baseChildQty').innerText) * childPrice;
-            document.querySelectorAll('.child-row').forEach(r => total += (parseInt(r.querySelector('.child-qty').value)||0) * childPrice);
             document.querySelectorAll('.adult-row').forEach(r => total += (parseInt(r.querySelector('.adult-qty').value)||0) * adultPrice);
             document.getElementById('summaryTotalAmount').innerText = total;
             document.getElementById('thaiBahtText').innerText = `(${ArabicNumberToText(total)})`;
@@ -881,9 +870,8 @@
                 const { data: urlData } = sbClient.storage.from('img').getPublicUrl(fileName);
 
                 const ad = Array.from(document.querySelectorAll('.adult-row')).map(r => ({ size: r.querySelector('.adult-size').value, qty: parseInt(r.querySelector('.adult-qty').value) }));
-                const chExtra = Array.from(document.querySelectorAll('.child-row')).map(r => ({ size: r.querySelector('.child-size').value, qty: parseInt(r.querySelector('.child-qty').value) }));
                 
-                const newOrder = { date: new Date().toISOString(), base_child: parseInt(document.getElementById('baseChildQty').innerText), extra_child: chExtra, adult_items: ad, amount: newTotal, slip_url: urlData.publicUrl };
+                const newOrder = { date: new Date().toISOString(), base_child: parseInt(document.getElementById('baseChildQty').innerText), adult_items: ad, amount: newTotal, slip_url: urlData.publicUrl };
                 let hist = selectedStudent.orders_history || []; hist.push(newOrder);
                 let finalAmount = parseFloat(selectedStudent.total_amount || 0) + newTotal;
 
@@ -1004,20 +992,17 @@
 
             const container = document.getElementById('bulkPrintContainer'); container.innerHTML = '';
             toPrint.forEach(st => {
-                let baseChild = 0, extraChildMap = {}, adultMap = {}, totalItems = 0;
+                let baseChild = 0, adultMap = {}, totalItems = 0;
                 if(st.orders_history && Array.isArray(st.orders_history)) {
                     st.orders_history.forEach(order => {
                         baseChild += order.base_child || 0; totalItems += order.base_child || 0;
-                        if(order.extra_child) order.extra_child.forEach(c => { extraChildMap[c.size] = (extraChildMap[c.size] || 0) + c.qty; totalItems += c.qty; });
                         if(order.adult_items) order.adult_items.forEach(a => { adultMap[a.size] = (adultMap[a.size] || 0) + a.qty; totalItems += a.qty; });
                     });
                 }
-                let eArr = []; for(let k in extraChildMap) eArr.push(`${k}(${extraChildMap[k]})`);
                 let aArr = []; for(let k in adultMap) aArr.push(`${k}(${adultMap[k]})`);
                 
                 let teacherSizeText = st.default_size ? `(ไซส์ ${st.default_size})` : '(รอระบุ)';
-                let summaryText = `เสื้อเด็กหลัก ${teacherSizeText} ${baseChild} ตัว`;
-                if(eArr.length > 0) summaryText += `, สั่งเพิ่ม ${eArr.join(' ')}`;
+                let summaryText = `เสื้อเด็ก ${teacherSizeText} ${baseChild} ตัว`;
                 if(aArr.length > 0) summaryText += `, ผู้ใหญ่ ${aArr.join(' ')}`;
                 summaryText += ` | รวม ${totalItems} ตัว | ยอดเงิน ${st.total_amount} บาท`;
                 let studentNoStr = st.student_no ? `เลขที่ ${st.student_no}` : '';
@@ -1114,13 +1099,12 @@
             let distributionList = [], currentRoom = '', roomRunningNo = 1;
 
             data.forEach((st) => {
-                let baseChild = 0, extraChildText = [], adultText = [], totalStudentShirts = 0;
+                let baseChild = 0, adultText = [], totalStudentShirts = 0;
                 if(st.orders_history && Array.isArray(st.orders_history)) {
                     st.orders_history.forEach(order => {
                         baseChild += order.base_child || 0; 
                         if(order.base_child > 0 && st.default_size) { factorySummary[`เด็ก-${st.default_size}`] += order.base_child; }
                         totalStudentShirts += order.base_child || 0;
-                        if(order.extra_child) order.extra_child.forEach(c => { factorySummary[`เด็ก-${c.size}`] = (factorySummary[`เด็ก-${c.size}`] || 0) + c.qty; extraChildText.push(`${c.size}(${c.qty})`); totalStudentShirts += c.qty; });
                         if(order.adult_items) order.adult_items.forEach(a => { factorySummary[`ผู้ใหญ่-${a.size}`] = (factorySummary[`ผู้ใหญ่-${a.size}`] || 0) + a.qty; adultText.push(`${a.size}(${a.qty})`); totalStudentShirts += a.qty; });
                     });
                 }
@@ -1128,7 +1112,7 @@
                 let finalNo = st.student_no ? st.student_no : roomRunningNo++;
                 let defaultSizeText = st.default_size ? `ไซส์ ${st.default_size} (${baseChild} ตัว)` : (baseChild > 0 ? `รอครูระบุ (${baseChild} ตัว)` : '-');
                 
-                distributionList.push({ "ห้อง": st.grade_room, "เลขที่": finalNo, "ชื่อ-นามสกุล": `${st.first_name} ${st.last_name}`, "ชื่อเล่น": st.nickname || '-', "เสื้อเด็กตัวหลัก": defaultSizeText, "เสื้อเด็ก (สั่งเพิ่ม)": extraChildText.length > 0 ? extraChildText.join(', ') : '-', "เสื้อผู้ใหญ่": adultText.length > 0 ? adultText.join(', ') : '-', "รวมจำนวนเสื้อ": `${totalStudentShirts} ตัว` });
+                distributionList.push({ "ห้อง": st.grade_room, "เลขที่": finalNo, "ชื่อ-นามสกุล": `${st.first_name} ${st.last_name}`, "ชื่อเล่น": st.nickname || '-', "เสื้อเด็ก": defaultSizeText, "เสื้อผู้ใหญ่": adultText.length > 0 ? adultText.join(', ') : '-', "รวมจำนวนเสื้อ": `${totalStudentShirts} ตัว` });
             });
 
             let factorySheetData = [], grandTotal = 0;

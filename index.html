@@ -41,6 +41,7 @@
     <header class="bg-tuRed text-white shadow-md sticky top-0 z-40 border-b-4 border-tuYellow no-print">
         <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col lg:flex-row justify-between items-center gap-3">
             <div class="flex items-center gap-4">
+                <!-- โลโก้เอาพื้นหลังและขอบออกแล้ว -->
                 <div class="w-14 h-14 flex items-center justify-center">
                     <img src="https://nseojcnqomakymrrfumi.supabase.co/storage/v1/object/public/img/logo.png" onerror="this.outerHTML='<span class=\'text-2xl font-bold\'>TU</span>'" alt="โลโก้โรงเรียน" class="w-full h-full object-contain drop-shadow-md">
                 </div>
@@ -50,6 +51,7 @@
                 </div>
             </div>
             
+            <!-- เมนูของ Staff (ซ่อนปุ่มสลับหน้า โชว์แค่ ID และปุ่มออก) -->
             <div id="staffNav" class="hidden items-center gap-2 flex-wrap justify-center">
                 <div id="userInfoDisplay" class="text-sm font-bold text-yellow-200 mr-2 border-r border-red-400 pr-3"></div>
                 <button id="btnChangePw" onclick="document.getElementById('pwModal').classList.remove('hidden')" class="hidden bg-white/20 text-white px-3 py-1.5 rounded-lg text-sm font-bold hover:bg-white/30" title="เปลี่ยนรหัสผ่าน"><i data-lucide="key" class="w-4 h-4 inline"></i></button>
@@ -101,7 +103,7 @@
                 </div>
                 
                 <div id="reorderAlert" class="bg-blue-50 border border-blue-200 text-blue-700 p-4 rounded-2xl mb-6 hidden font-bold">
-                    <i data-lucide="info" class="inline w-5 h-5 mb-1"></i> นักเรียนคนนี้เคยชำระเงินแล้ว (ยอดเดิมสะสม <span id="oldTotal">0</span> บ.) หากต้องการสั่งซื้อเพิ่มสามารถทำรายการต่อได้เลย
+                    <i data-lucide="info" class="inline w-5 h-5 mb-1"></i> นักเรียนคนนี้เคยชำระเงินแล้ว (ยอดเดิมสะสม <span id="oldTotal">0</span> บ.) หากต้องการสั่งซื้อเพิ่มสามารถทำรายการต่อได้เลย (ระบบจะบวกยอดใหม่เข้าไป)
                 </div>
 
                 <div id="shoppingBlock" class="space-y-4">
@@ -267,7 +269,7 @@
                                 <th class="p-3">ยอดสะสม</th>
                                 <th class="p-3">สถานะล่าสุด</th>
                                 <th class="p-3 text-center">พิมพ์แล้ว</th>
-                                <th class="p-3">สลิป/การจัดการ</th>
+                                <th class="p-3 text-center">สลิป/การจัดการ</th>
                             </tr>
                         </thead>
                         <tbody id="backendTableBody" class="divide-y divide-slate-100"></tbody>
@@ -288,6 +290,9 @@
                             <i data-lucide="file-spreadsheet" class="w-4 h-4"></i> นำเข้าไฟล์ Excel เด็ก (.xlsx)
                             <input type="file" accept=".xlsx, .xls" class="hidden" onchange="importExcel(this)">
                         </label>
+                        <button onclick="deleteAllStudents()" class="bg-red-600 text-white px-3 py-2 rounded-lg text-sm font-bold cursor-pointer flex items-center gap-1 hover:bg-red-700 shadow-sm ml-2">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i> ล้างข้อมูลเด็กทั้งหมด
+                        </button>
                     </div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-5 gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-200">
@@ -374,6 +379,23 @@
         </div>
     </div>
 
+    <!-- Modal: แก้ไขข้อมูลนักเรียน (รายบุคคล) -->
+    <div id="editStudentModal" class="fixed inset-0 bg-black/80 z-[70] flex items-center justify-center hidden no-print">
+        <div class="bg-white w-[90%] max-w-sm p-6 rounded-3xl text-center shadow-xl">
+            <h3 class="text-xl font-bold text-tuRed mb-4">แก้ไขข้อมูลนักเรียน</h3>
+            <input type="hidden" id="editStId">
+            <input type="number" id="editStNo_m" placeholder="เลขที่ (เว้นว่างได้)" class="w-full p-3 border rounded-xl mb-3 focus:border-tuRed focus:outline-none">
+            <input type="text" id="editStFirst_m" placeholder="ชื่อจริง" class="w-full p-3 border rounded-xl mb-3 focus:border-tuRed focus:outline-none">
+            <input type="text" id="editStLast_m" placeholder="นามสกุล" class="w-full p-3 border rounded-xl mb-3 focus:border-tuRed focus:outline-none">
+            <input type="text" id="editStNick_m" placeholder="ชื่อเล่น" class="w-full p-3 border rounded-xl mb-3 focus:border-tuRed focus:outline-none">
+            <input type="text" id="editStRoom_m" placeholder="ห้อง (เช่น อ.1/1)" class="w-full p-3 border rounded-xl mb-4 focus:border-tuRed focus:outline-none">
+            <div class="flex gap-2">
+                <button onclick="saveEditStudent()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-xl font-bold">บันทึกแก้ไข</button>
+                <button onclick="document.getElementById('editStudentModal').classList.add('hidden')" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 py-2 rounded-xl font-bold">ยกเลิก</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal: เปลี่ยนรหัสผ่าน -->
     <div id="pwModal" class="fixed inset-0 bg-black/80 z-[70] flex items-center justify-center hidden no-print">
         <div class="bg-white w-[90%] max-w-sm p-6 rounded-3xl text-center">
@@ -417,7 +439,7 @@
         let loggedInUsername = null;
         let availableSizes = { adult: [], child: [] };
         let allStudents = []; 
-        let roomDetailsList = []; // เก็บรายชื่อครู
+        let roomDetailsList = []; 
         let backendDataList = [];
         let rawBackendDataList = []; 
         let teacherStudentList = [];
@@ -750,7 +772,6 @@
             document.getElementById('orderFormBlock').classList.remove('hidden');
             let studentNoStr = st.student_no ? ` (เลขที่ ${st.student_no})` : '';
             
-            // ดึงชื่อครูประจำชั้นมาโชว์
             let roomInfo = roomDetailsList.find(r => r.grade_room === st.grade_room);
             let teacherText = "";
             if (roomInfo) {
@@ -920,6 +941,20 @@
 
             filteredList.forEach((st, idx) => {
                 let badge = st.payment_status==='รอตรวจสอบ'?'bg-amber-100 text-amber-700':st.payment_status==='ชำระแล้ว'?'bg-emerald-100 text-emerald-700':st.payment_status==='สลิปมีปัญหา'?'bg-red-100 text-red-700':'bg-slate-100 text-slate-600';
+                
+                let manageBtns = '';
+                if(st.latest_slip_url) {
+                    manageBtns += `<button onclick="openSlipModal(${st.id}, '${st.latest_slip_url}', '${st.first_name}', '${st.payment_status}')" class="bg-blue-50 text-blue-600 px-3 py-1.5 rounded-lg text-xs font-bold border border-blue-200 hover:bg-blue-100 w-full mb-1">ดูสลิป</button>`;
+                }
+                if(currentRoleUser === 'admin') {
+                    manageBtns += `<div class="flex gap-1 justify-center">
+                                    <button onclick="openEditStudentModal(${st.id})" class="flex-1 bg-amber-50 text-amber-600 px-2 py-1.5 rounded-lg text-xs font-bold border border-amber-200 hover:bg-amber-100">แก้ไข</button>
+                                    <button onclick="deleteStudent(${st.id})" class="bg-red-50 text-red-600 px-2 py-1.5 rounded-lg text-xs font-bold border border-red-200 hover:bg-red-100"><i data-lucide="trash-2" class="w-3 h-3"></i></button>
+                                   </div>`;
+                } else if (!st.latest_slip_url) {
+                    manageBtns = '-';
+                }
+
                 tbody.innerHTML += `<tr class="hover:bg-slate-50 border-b border-slate-100 transition">
                     <td class="p-3 text-center"><input type="checkbox" class="row-cb w-4 h-4" value="${st.id}"></td>
                     <td class="p-3 text-center font-bold text-slate-400">${idx + 1}</td>
@@ -929,7 +964,7 @@
                     <td class="p-3 font-bold text-tuRed">${st.total_amount > 0 ? st.total_amount + ' บ.' : '0 บ.'}</td>
                     <td class="p-3"><span class="px-3 py-1 rounded-full text-xs font-bold ${badge}">${st.payment_status}</span></td>
                     <td class="p-3 text-center">${st.is_printed?'<i data-lucide="check-square" class="w-5 h-5 text-emerald-500 mx-auto"></i>':'-'}</td>
-                    <td class="p-3 flex gap-1">${st.latest_slip_url ? `<button onclick="openSlipModal(${st.id}, '${st.latest_slip_url}', '${st.first_name}', '${st.payment_status}')" class="bg-blue-50 text-blue-600 px-3 py-1.5 rounded-lg text-xs font-bold border border-blue-200 hover:bg-blue-100">ตรวจสอบ/ดูสลิป</button>` : '-'}</td>
+                    <td class="p-3 text-center align-middle">${manageBtns}</td>
                 </tr>`;
             });
             lucide.createIcons(); document.getElementById('checkAll').checked = false;
@@ -992,6 +1027,78 @@
             function executePrint() { toggleLoader(false); window.print(); setTimeout(() => { if(confirm('ต้องการทำเครื่องหมายว่า "ตรวจสอบ/ปริ๊นแล้ว" ให้กับรายการเหล่านี้หรือไม่?')) markSelectedAsPrinted(); }, 500); }
         }
 
+        // ================= ADMIN: แก้ไข / ลบ นักเรียน =================
+        function openEditStudentModal(id) {
+            const st = allStudents.find(s => s.id === id);
+            if(!st) return;
+            document.getElementById('editStId').value = st.id;
+            document.getElementById('editStNo_m').value = st.student_no || '';
+            document.getElementById('editStFirst_m').value = st.first_name || '';
+            document.getElementById('editStLast_m').value = st.last_name || '';
+            document.getElementById('editStNick_m').value = st.nickname || '';
+            document.getElementById('editStRoom_m').value = st.grade_room || '';
+            document.getElementById('editStudentModal').classList.remove('hidden');
+        }
+
+        async function saveEditStudent() {
+            const id = document.getElementById('editStId').value;
+            const no = document.getElementById('editStNo_m').value;
+            const f = document.getElementById('editStFirst_m').value.trim();
+            const l = document.getElementById('editStLast_m').value.trim();
+            const n = document.getElementById('editStNick_m').value.trim();
+            const r = document.getElementById('editStRoom_m').value.trim();
+
+            if(!f || !l || !r) return alert('กรุณากรอกชื่อ, นามสกุล และห้อง ให้ครบถ้วน');
+
+            toggleLoader(true);
+            await sbClient.from('students').update({
+                student_no: no ? parseInt(no) : null,
+                first_name: f,
+                last_name: l,
+                nickname: n,
+                grade_room: r
+            }).eq('id', id);
+            
+            document.getElementById('editStudentModal').classList.add('hidden');
+            await loadAllStudentsForSearch();
+            populateRoomsFilter();
+            await loadBackendData();
+            toggleLoader(false);
+            alert('บันทึกข้อมูลแก้ไขสำเร็จ!');
+        }
+
+        async function deleteStudent(id) {
+            if(confirm('คุณแน่ใจหรือไม่ที่จะลบข้อมูลนักเรียนคนนี้?\nประวัติการสั่งซื้อและสลิปของเด็กคนนี้จะหายไปทั้งหมด')) {
+                toggleLoader(true);
+                await sbClient.from('students').delete().eq('id', id);
+                await loadAllStudentsForSearch();
+                populateRoomsFilter();
+                await loadBackendData();
+                toggleLoader(false);
+            }
+        }
+
+        async function deleteAllStudents() {
+            if(confirm('⚠️ คำเตือนขั้นสุด: คุณต้องการ "ล้างข้อมูลนักเรียนทั้งหมด" ใช่หรือไม่?\nข้อมูลการสั่งซื้อและสลิปทั้งหมดจะหายไปและไม่สามารถกู้คืนได้!')) {
+                let pass = prompt('พิมพ์คำว่า "ยืนยัน" เพื่อลบข้อมูลนักเรียนทั้งหมด:');
+                if(pass === 'ยืนยัน') {
+                    toggleLoader(true);
+                    const { error } = await sbClient.from('students').delete().neq('id', -1);
+                    toggleLoader(false);
+                    if(error) alert('เกิดข้อผิดพลาด: ' + error.message);
+                    else {
+                        alert('ล้างข้อมูลนักเรียนทั้งหมดสำเร็จแล้ว!');
+                        await loadAllStudentsForSearch();
+                        populateRoomsFilter();
+                        loadBackendData();
+                    }
+                } else {
+                    alert('ยกเลิกการลบข้อมูล (พิมพ์ไม่ตรง)');
+                }
+            }
+        }
+
+        // ================= EXCEL สรุปฝ่ายพัสดุ (แยก 2 Sheet) =================
         async function exportProductionExcel() {
             toggleLoader(true);
             const { data } = await sbClient.from('students').select('*').eq('payment_status', 'ชำระแล้ว').order('grade_room').order('student_no', { ascending: true, nullsFirst: false }).order('first_name');
@@ -1039,7 +1146,6 @@
             const pCont = document.getElementById('adminPhaseContainer'); pCont.innerHTML = '';
             ph?.forEach(p => pCont.innerHTML += `<div class="flex gap-2 items-center bg-slate-50 p-3 rounded-xl border border-slate-100"><span class="font-bold w-10 text-center text-tuRed">${p.grade_level}</span><input type="datetime-local" class="border border-slate-200 p-2 rounded-lg flex-1 text-sm focus:outline-none focus:border-tuRed" id="st_${p.id}" value="${p.start_date.slice(0,16)}"> <span class="text-xs text-slate-400">ถึง</span> <input type="datetime-local" class="border border-slate-200 p-2 rounded-lg flex-1 text-sm focus:outline-none focus:border-tuRed" id="en_${p.id}" value="${p.end_date.slice(0,16)}"><button onclick="savePhase(${p.id})" class="bg-tuRed hover:bg-red-800 text-white px-4 py-2 rounded-lg text-sm font-bold">เซฟ</button></div>`);
             
-            // Render Teacher List in Admin
             const tList = document.getElementById('adminTeacherList');
             tList.innerHTML = '';
             if (roomDetailsList.length > 0) {
@@ -1092,7 +1198,7 @@
             if(document.getElementById('promptpayNumDisplay')) document.getElementById('promptpayNumDisplay').innerText = val; toggleLoader(false); alert('อัปเดตช่องทางรับเงินเรียบร้อยแล้ว');
         }
 
-        // ================= CSV Import / Excel (Students & Teachers) =================
+        // ================= CSV Import / Excel =================
         function downloadExcelTemplate() {
             const ws_data = [["student_no", "first_name", "last_name", "nickname", "grade_room"], [1, "สมหมาย", "ใจดี", "เต้", "อ.1/1"], [2, "มานี", "มีตา", "มิน", "อ.1/1"]];
             const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(ws_data), "Students"); XLSX.writeFile(wb, "Student_Template.xlsx");
@@ -1118,21 +1224,14 @@
                     let newStudents = [];
                     for(let i=1; i<rows.length; i++) { 
                         let cols = rows[i];
-                        if(!cols || cols.length < 4) continue; // ข้ามบรรทัดที่ว่าง
-
-                        let sno = parseInt(cols[0]);
-                        let fname, lname, nick, room;
-
-                        // ระบบเดาว่าไฟล์มีหรือไม่มีเลขที่ โดยเช็คว่า col 0 เป็นตัวเลขไหม
+                        if(!cols || cols.length < 4) continue; 
+                        let sno = parseInt(cols[0]); let fname, lname, nick, room;
                         if(!isNaN(sno)) { 
                             fname = String(cols[1] || '').trim(); lname = String(cols[2] || '').trim(); nick = String(cols[3] || '').trim(); room = String(cols[4] || '').trim();
                         } else { 
                             sno = null; fname = String(cols[0] || '').trim(); lname = String(cols[1] || '').trim(); nick = String(cols[2] || '').trim(); room = String(cols[3] || '').trim();
                         }
-
-                        if(fname && lname && room) {
-                            newStudents.push({ student_no: sno, first_name: fname, last_name: lname, nickname: nick, grade_room: room });
-                        }
+                        if(fname && lname && room) { newStudents.push({ student_no: sno, first_name: fname, last_name: lname, nickname: nick, grade_room: room }); }
                     }
                     if(newStudents.length === 0) return alert('ข้อมูลผิดรูปแบบ (ต้องมี เลขที่, ชื่อ, สกุล, ชื่อเล่น, ห้อง)');
                     
@@ -1157,23 +1256,12 @@
                         if(!cols || cols.length < 1) continue; 
                         let room = String(cols[0] || '').trim();
                         if(!room) continue;
-                        newTeachers.push({
-                            grade_room: room,
-                            teacher1_name: String(cols[1] || '').trim() || null,
-                            teacher1_nick: String(cols[2] || '').trim() || null,
-                            teacher2_name: String(cols[3] || '').trim() || null,
-                            teacher2_nick: String(cols[4] || '').trim() || null
-                        });
+                        newTeachers.push({ grade_room: room, teacher1_name: String(cols[1] || '').trim() || null, teacher1_nick: String(cols[2] || '').trim() || null, teacher2_name: String(cols[3] || '').trim() || null, teacher2_nick: String(cols[4] || '').trim() || null });
                     }
                     if(newTeachers.length === 0) return alert('ข้อมูลผิดรูปแบบ');
-                    
-                    toggleLoader(true); 
-                    const { error } = await sbClient.from('room_details').upsert(newTeachers, { onConflict: 'grade_room' });
-                    toggleLoader(false);
+                    toggleLoader(true); const { error } = await sbClient.from('room_details').upsert(newTeachers, { onConflict: 'grade_room' }); toggleLoader(false);
                     if(error) throw error;
-                    
-                    alert(`นำเข้าข้อมูลครูสำเร็จ ${newTeachers.length} ห้อง!`); 
-                    input.value = ''; await loadRoomDetails(); await loadAdminSettings(); 
+                    alert(`นำเข้าข้อมูลครูสำเร็จ ${newTeachers.length} ห้อง!`); input.value = ''; await loadRoomDetails(); await loadAdminSettings(); 
                 } catch(error) { toggleLoader(false); alert("Error: " + error.message); }
             }; reader.readAsArrayBuffer(file);
         }

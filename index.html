@@ -37,11 +37,10 @@
         </div>
     </div>
 
-    <!-- Header -->
     <header class="bg-tuRed text-white shadow-md sticky top-0 z-40 border-b-4 border-tuYellow no-print">
         <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col lg:flex-row justify-between items-center gap-3">
             <div class="flex items-center gap-4">
-                <div class="w-14 h-14">
+                <div class="w-14 h-14 flex items-center justify-center">
                     <img src="https://nseojcnqomakymrrfumi.supabase.co/storage/v1/object/public/img/logo.png" onerror="this.outerHTML='<span class=\'text-2xl font-bold\'>TU</span>'" alt="โลโก้โรงเรียน" class="w-full h-full object-contain drop-shadow-md">
                 </div>
                 <div>
@@ -52,7 +51,7 @@
             
             <div id="staffNav" class="hidden items-center gap-2 flex-wrap justify-center">
                 <div id="userInfoDisplay" class="text-sm font-bold text-yellow-200 mr-2 border-r border-red-400 pr-3"></div>
-                <button id="btnChangePw" onclick="document.getElementById('pwModal').classList.remove('hidden')" class="hidden bg-white/20 text-white px-3 py-1.5 rounded-lg text-sm font-bold hover:bg-white/30" title="เปลี่ยนรหัสผ่าน"><i data-lucide="key" class="w-4 h-4 inline"></i></button>
+                <button id="btnChangePw" onclick="document.getElementById('pwModal').classList.remove('hidden')" class="hidden bg-white/20 text-white px-3 py-1.5 rounded-lg text-sm font-bold hover:bg-white/30" title="เปลี่ยนรหัสผ่าน (แอดมิน)"><i data-lucide="key" class="w-4 h-4 inline"></i></button>
                 <button onclick="logout()" class="bg-white text-tuRed px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-1 hover:bg-slate-100 shadow-sm"><i data-lucide="log-out" class="w-4 h-4"></i> ออกจากระบบ</button>
             </div>
         </div>
@@ -60,7 +59,6 @@
 
     <main class="flex-grow max-w-6xl w-full mx-auto p-4 space-y-6 no-print">
         
-        <!-- 0. LOGIN VIEW -->
         <section id="view-login" class="role-view hidden max-w-md mx-auto mt-10">
             <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 text-center">
                 <div class="w-16 h-16 bg-red-50 text-tuRed rounded-full flex items-center justify-center mx-auto mb-4"><i data-lucide="lock" class="w-8 h-8"></i></div>
@@ -70,12 +68,11 @@
                     <input type="text" id="txtUsername" placeholder="ชื่อผู้ใช้งาน (Username)" class="w-full p-3 rounded-xl border border-slate-200 focus:border-tuRed focus:outline-none">
                     <input type="password" id="txtPassword" placeholder="รหัสผ่าน (Password)" class="w-full p-3 rounded-xl border border-slate-200 focus:border-tuRed focus:outline-none">
                     <button onclick="doLogin()" class="w-full bg-tuRed text-white font-bold py-3 rounded-xl hover:bg-red-800 transition">ล็อคอินเข้าสู่ระบบ</button>
-                    <button onclick="requestRoleSwitch('parent')" class="w-full text-slate-500 text-sm mt-2 hover:underline">ย้อนกลับไปหน้าสั่งซื้อ</button>
+                    <button onclick="returnToParent()" class="w-full text-slate-500 text-sm mt-2 hover:underline">ย้อนกลับไปหน้าสั่งซื้อผู้ปกครอง</button>
                 </div>
             </div>
         </section>
 
-        <!-- 1. PARENT VIEW -->
         <section id="view-parent" class="role-view space-y-6">
             <div class="bg-tuYellow/20 border border-tuYellow text-tuRed p-4 rounded-2xl flex items-start gap-3 shadow-sm">
                 <i data-lucide="bell-ring" class="w-6 h-6 mt-1 shrink-0 text-tuRed"></i>
@@ -101,15 +98,14 @@
                 </div>
                 
                 <div id="reorderAlert" class="bg-blue-50 border border-blue-200 text-blue-700 p-4 rounded-2xl mb-6 hidden font-bold">
-                    <i data-lucide="info" class="inline w-5 h-5 mb-1"></i> นักเรียนคนนี้เคยชำระเงินแล้ว (ยอดเดิมสะสม <span id="oldTotal">0</span> บ.) หากต้องการสั่งซื้อเพิ่มสามารถทำรายการต่อได้เลย
+                    <i data-lucide="info" class="inline w-5 h-5 mb-1"></i> นักเรียนคนนี้เคยชำระเงินแล้ว (ยอดเดิมสะสม <span id="oldTotal">0</span> บ.) หากต้องการสั่งซื้อเพิ่มสามารถทำรายการต่อได้เลย (ระบบจะบวกยอดใหม่เข้าไป)
                 </div>
 
                 <div id="shoppingBlock" class="space-y-4">
-                    <!-- เสื้อเด็ก -->
                     <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-4">
                         <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2">
                             <div><p class="font-bold text-xl">เสื้อเด็ก (150 บาท)</p><p class="text-sm text-slate-500">ตัวแรกระบบล็อค 1 ตัวตามที่ครูวัด</p></div>
-                            <button onclick="addChildRow()" class="text-tuRed font-bold flex items-center justify-center gap-1 bg-red-50 px-3 py-2 rounded-lg border border-red-100 hover:bg-red-100"><i data-lucide="plus-circle" class="w-4 h-4"></i> ซื้อเสื้อเด็กเพิ่ม (ระบุไซส์เอง)</button>
+                            <button onclick="addChildRow()" class="text-tuRed font-bold flex items-center justify-center gap-1 bg-red-50 px-3 py-2 rounded-lg border border-red-100 hover:bg-red-100"><i data-lucide="plus-circle" class="w-4 h-4"></i> ซื้อเสื้อเด็กตัวที่ 2 เพิ่ม (ระบุไซส์)</button>
                         </div>
                         
                         <div class="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
@@ -122,7 +118,6 @@
                         <div id="childItemsContainer" class="space-y-2"></div>
                     </div>
 
-                    <!-- เสื้อผู้ใหญ่ -->
                     <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-4">
                         <div class="flex justify-between items-center">
                             <p class="font-bold text-xl">เสื้อผู้ใหญ่ (280 บาท)</p>
@@ -131,7 +126,6 @@
                         <div id="adultItemsContainer" class="space-y-2"></div>
                     </div>
 
-                    <!-- สรุปยอดและ QR Code -->
                     <div class="mt-6 p-6 bg-tuYellow/10 rounded-3xl border border-tuYellow flex flex-col md:flex-row gap-6 items-center">
                         <div class="text-center flex-1 w-full">
                             <p class="text-slate-600 font-bold text-lg">ยอดชำระรอบนี้</p>
@@ -145,7 +139,7 @@
                                 <img id="qrImage" src="" alt="QR Code PromptPay" class="w-full h-full object-contain">
                             </div>
                             <div class="flex gap-2 w-full mb-3">
-                                <button onclick="downloadQR()" class="flex-1 bg-slate-800 text-white text-xs py-2.5 rounded-lg font-bold hover:bg-slate-700 flex items-center justify-center gap-1"><i data-lucide="download" class="w-4 h-4"></i> เซฟคิวอาร์โค้ด</button>
+                                <button onclick="downloadQR()" class="flex-1 bg-slate-800 text-white text-xs py-2 rounded-lg font-bold hover:bg-slate-700 flex items-center justify-center gap-1"><i data-lucide="download" class="w-3 h-3"></i> เซฟคิวอาร์โค้ด</button>
                             </div>
                             <div class="text-center bg-slate-50 p-3 rounded-xl w-full border border-slate-200">
                                 <p class="text-sm font-bold text-slate-800">ธนาคารกรุงไทย</p>
@@ -166,7 +160,6 @@
             </div>
         </section>
 
-        <!-- ================= 2. TEACHER VIEW (ครูประจำชั้น) ================= -->
         <section id="view-teacher" class="role-view space-y-6 hidden">
             <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
                 <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
@@ -213,7 +206,6 @@
             </div>
         </section>
 
-        <!-- DASHBOARD (Shared - เงิน, บริหาร, แอดมิน) -->
         <section id="sharedDashboard" class="hidden space-y-6">
             <h2 class="text-3xl font-bold text-tuRed">แดชบอร์ดภาพรวมโครงการ</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -227,7 +219,6 @@
             </div>
         </section>
 
-        <!-- 3. FINANCE & ADMIN LIST VIEW -->
         <section id="view-backend-list" class="role-view space-y-6 hidden">
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
                 <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-3">
@@ -269,7 +260,6 @@
             </div>
         </section>
 
-        <!-- 4. ADMIN VIEW (Settings Only) -->
         <section id="view-admin" class="role-view space-y-6 hidden">
             
             <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
@@ -336,7 +326,6 @@
         <a href="#" onclick="showLoginScreen()" class="text-slate-500 hover:text-white text-xs underline">สำหรับเจ้าหน้าที่ (Staff Login)</a>
     </footer>
 
-    <!-- Modals -->
     <div id="slipModal" class="fixed inset-0 bg-black/80 z-[70] flex items-center justify-center hidden no-print py-10">
         <div class="bg-white w-[90%] max-w-md p-6 rounded-3xl flex flex-col items-center text-center relative max-h-full overflow-y-auto">
             <button onclick="document.getElementById('slipModal').classList.add('hidden')" class="absolute top-4 right-4 text-slate-400"><i data-lucide="x"></i></button>
@@ -352,8 +341,12 @@
     <div id="pwModal" class="fixed inset-0 bg-black/80 z-[70] flex items-center justify-center hidden no-print">
         <div class="bg-white w-[90%] max-w-sm p-6 rounded-3xl text-center">
             <h3 class="text-xl font-bold text-tuRed mb-2">เปลี่ยนรหัสผ่าน</h3>
-            <p class="text-sm text-slate-500 mb-4">(แอดมินหรือครูที่ล็อคอินอยู่)</p>
-            <input type="hidden" id="pwTargetUser">
+            <p class="text-sm text-slate-500 mb-4">(เฉพาะสิทธิ์ Admin เท่านั้น)</p>
+            <select id="pwRoleSelect" class="w-full p-3 border rounded-xl mb-4 font-bold bg-slate-50">
+                <option value="admin">บัญชี: แอดมิน (admin)</option>
+                <option value="finance">บัญชี: การเงิน (finance)</option>
+                <option value="boss">บัญชี: ผู้บริหาร (boss)</option>
+            </select>
             <input type="password" id="newPwInput" placeholder="รหัสผ่านใหม่" class="w-full p-3 border rounded-xl mb-4">
             <div class="flex gap-2">
                 <button onclick="changePassword()" class="flex-1 bg-tuRed text-white py-2 rounded-xl font-bold">บันทึก</button>
@@ -367,11 +360,10 @@
             <div class="w-20 h-20 bg-emerald-100 text-emerald-500 rounded-full flex items-center justify-center mb-4"><i data-lucide="check-circle" class="w-10 h-10"></i></div>
             <h3 class="text-2xl font-bold text-emerald-600 mb-2">ส่งข้อมูลสำเร็จ!</h3>
             <p class="text-slate-600 mb-4">ทางโรงเรียนได้รับคำสั่งซื้อแล้ว การเงินจะส่งสลิปให้ 1-3 วันทำการ <br><strong class="text-tuRed">ผู้ปกครองไม่ต้องส่งสลิปเข้าไลน์การเงินแล้วนะคะ ขอบพระคุณค่ะ</strong></p>
-            <button onclick="location.reload()" class="w-full bg-slate-200 text-slate-700 py-3 rounded-2xl font-bold hover:bg-slate-300">ปิดหน้าต่าง / กลับหน้าสั่งซื้อ</button>
+            <button onclick="location.reload()" class="w-full bg-slate-200 text-slate-700 py-3 rounded-2xl font-bold hover:bg-slate-300">ปิดหน้าต่าง / กลับหน้าแรก</button>
         </div>
     </div>
 
-    <!-- Bulk Print Container -->
     <div id="bulkPrintContainer" class="hidden"></div>
 
     <script>
@@ -409,7 +401,7 @@
             await loadGlobalSettings();
             await loadAllStudentsForSearch();
             populateRoomsFilter();
-            requestRoleSwitch('parent'); 
+            returnToParent(); 
         });
 
         function toggleLoader(show) { document.getElementById('globalLoader').classList.toggle('hidden', !show); }
@@ -431,7 +423,6 @@
         }
 
         function copyBankAcc() { navigator.clipboard.writeText("4750364754"); alert('คัดลอกเลขบัญชีธนาคารกรุงไทยเรียบร้อยแล้ว'); }
-        
         async function downloadQR() { 
             const a = document.createElement('a'); 
             a.href = document.getElementById('qrImage').src; 
@@ -476,15 +467,11 @@
             document.getElementById('txtUsername').value = ''; document.getElementById('txtPassword').value = '';
         }
 
-        function requestRoleSwitch(role) {            
+        function returnToParent() {
             document.querySelectorAll('.role-view').forEach(v => v.classList.add('hidden'));
             document.getElementById('sharedDashboard').classList.add('hidden');
-
-            if (role === 'parent') { document.getElementById('view-parent').classList.remove('hidden'); checkPhase(); return; }
-            if (role === 'finance') { document.getElementById('sharedDashboard').classList.remove('hidden'); document.getElementById('view-backend-list').classList.remove('hidden'); loadBackendData(); } 
-            else if (role === 'boss') { document.getElementById('sharedDashboard').classList.remove('hidden'); loadBackendData(); } 
-            else if (role === 'admin') { document.getElementById('sharedDashboard').classList.remove('hidden'); document.getElementById('view-backend-list').classList.remove('hidden'); document.getElementById('view-admin').classList.remove('hidden'); loadBackendData(); loadAdminSettings(); }
-            else if (role === 'teacher') { document.getElementById('view-teacher').classList.remove('hidden'); loadTeacherDashboard(); }
+            document.getElementById('view-parent').classList.remove('hidden');
+            checkPhase();
         }
 
         async function doLogin() {
@@ -499,23 +486,33 @@
                 
                 document.getElementById('staffNav').classList.remove('hidden');
                 document.getElementById('userInfoDisplay').innerText = `ID: ${loggedInUsername}`;
-                document.getElementById('pwTargetUser').value = loggedInUsername;
+
+                document.querySelectorAll('.role-view').forEach(v => v.classList.add('hidden'));
+                document.getElementById('sharedDashboard').classList.add('hidden');
 
                 if(currentRoleUser === 'admin') { 
                     document.getElementById('btnChangePw').classList.remove('hidden'); 
-                    requestRoleSwitch('admin'); 
+                    document.getElementById('sharedDashboard').classList.remove('hidden');
+                    document.getElementById('view-backend-list').classList.remove('hidden');
+                    document.getElementById('view-admin').classList.remove('hidden');
+                    loadBackendData(); loadAdminSettings();
                 } 
-                else if(currentRoleUser === 'finance') { requestRoleSwitch('finance'); } 
-                else if(currentRoleUser === 'boss') { requestRoleSwitch('boss'); }
+                else if(currentRoleUser === 'finance') { 
+                    document.getElementById('sharedDashboard').classList.remove('hidden');
+                    document.getElementById('view-backend-list').classList.remove('hidden');
+                    loadBackendData();
+                } 
+                else if(currentRoleUser === 'boss') { 
+                    document.getElementById('sharedDashboard').classList.remove('hidden');
+                    loadBackendData(); 
+                }
                 else if(currentRoleUser === 'teacher') { 
-                    document.getElementById('btnChangePw').classList.remove('hidden'); // ครูเปลี่ยนรหัสตัวเองได้
-                    // Map teacher username to room, e.g., teacher11 -> อ.1/1
+                    document.getElementById('view-teacher').classList.remove('hidden'); 
                     let match = loggedInUsername.match(/teacher(\d)(\d)/);
                     if(match) teacherAssignedRoom = `อ.${match[1]}/${match[2]}`;
                     else teacherAssignedRoom = prompt("กรุณาระบุห้องเรียนของคุณ (เช่น อ.1/1):") || "ไม่ระบุ";
-                    
                     document.getElementById('teacherRoomDisplay').innerText = teacherAssignedRoom;
-                    requestRoleSwitch('teacher'); 
+                    loadTeacherDashboard(); 
                 }
             } else alert('ชื่อผู้ใช้งาน หรือรหัสผ่านไม่ถูกต้อง');
         }
@@ -523,12 +520,12 @@
         function logout() { 
             currentRoleUser = null; loggedInUsername = null; teacherAssignedRoom = "";
             document.getElementById('staffNav').classList.add('hidden'); 
-            requestRoleSwitch('parent'); 
+            returnToParent(); 
         }
 
         async function changePassword() {
             const nw = document.getElementById('newPwInput').value.trim();
-            const u = document.getElementById('pwTargetUser').value; // เปลี่ยนรหัสของ ID ตัวเองที่ล็อคอิน
+            const u = document.getElementById('pwRoleSelect').value;
             if(!nw) return alert('กรุณากรอกรหัสผ่านใหม่');
             toggleLoader(true); await sbClient.from('staff_users').update({password: nw}).eq('username', u); toggleLoader(false);
             alert('เปลี่ยนรหัสผ่านสำเร็จแล้ว'); document.getElementById('newPwInput').value = ''; document.getElementById('pwModal').classList.add('hidden');
@@ -568,10 +565,7 @@
                 `;
             });
 
-            // Set selected values
-            teacherStudentList.forEach(st => {
-                if(st.default_size) document.getElementById(`tsize_${st.id}`).value = st.default_size;
-            });
+            teacherStudentList.forEach(st => { if(st.default_size) document.getElementById(`tsize_${st.id}`).value = st.default_size; });
 
             document.getElementById('teacherCountDone').innerText = countDone;
             document.getElementById('teacherCountPending').innerText = countPending;
@@ -593,32 +587,22 @@
         }
 
         async function saveSingleTeacherSize(id, size) {
-            // Auto save when teacher changes dropdown
             await sbClient.from('students').update({default_size: size || null}).eq('id', id);
-            // update local counts visually
             let countDone = 0; let countPending = 0;
             document.querySelectorAll('select[id^="tsize_"]').forEach(sel => { if(sel.value) countDone++; else countPending++; });
             document.getElementById('teacherCountDone').innerText = countDone;
             document.getElementById('teacherCountPending').innerText = countPending;
-            await loadAllStudentsForSearch(); // refresh cache
+            await loadAllStudentsForSearch(); 
         }
 
         async function lockTeacherSizes() {
             let pending = parseInt(document.getElementById('teacherCountPending').innerText);
-            if(pending > 0) {
-                if(!confirm(`ยังมีเด็กที่ยังไม่ระบุไซส์อีก ${pending} คน ต้องการยืนยันและล็อคข้อมูลใช่หรือไม่?`)) return;
-            } else {
-                if(!confirm("ยืนยันการล็อคข้อมูล? (เมื่อล็อคแล้วจะไม่สามารถแก้ไขไซส์ได้อีก)")) return;
-            }
+            if(pending > 0) { if(!confirm(`ยังมีเด็กที่ยังไม่ระบุไซส์อีก ${pending} คน ต้องการยืนยันและล็อคข้อมูลใช่หรือไม่?`)) return; } 
+            else { if(!confirm("ยืนยันการล็อคข้อมูล? (เมื่อล็อคแล้วจะไม่สามารถแก้ไขไซส์ได้อีก)")) return; }
             toggleLoader(true);
             const idsToLock = teacherStudentList.map(st => st.id);
-            if(idsToLock.length > 0) {
-                // Update multiple rows (Supabase REST API format)
-                await sbClient.from('students').update({size_locked: true}).in('id', idsToLock);
-            }
-            await loadAllStudentsForSearch();
-            await loadTeacherDashboard();
-            toggleLoader(false);
+            if(idsToLock.length > 0) await sbClient.from('students').update({size_locked: true}).in('id', idsToLock);
+            await loadAllStudentsForSearch(); await loadTeacherDashboard(); toggleLoader(false);
             alert('ล็อคข้อมูลเรียบร้อยแล้ว ส่งข้อมูลต่อให้การเงิน/พัสดุเรียบร้อย!');
         }
 
@@ -676,7 +660,6 @@
             
             document.getElementById('baseChildQty').innerText = hasPaid ? "0" : "1"; 
             
-            // โชว์ไซส์ที่ครูระบุไว้
             const tSize = document.getElementById('teacherSizeDisplay');
             if(st.default_size) {
                 tSize.innerText = st.default_size;
@@ -880,7 +863,6 @@
                 let eArr = []; for(let k in extraChildMap) eArr.push(`${k}(${extraChildMap[k]})`);
                 let aArr = []; for(let k in adultMap) aArr.push(`${k}(${adultMap[k]})`);
                 
-                // ใช้ default_size ที่ครูระบุมาโชว์ในสลิปแทนคำว่า มาตรฐาน
                 let teacherSizeText = st.default_size ? `(ไซส์ ${st.default_size})` : '(รอระบุ)';
                 let summaryText = `เสื้อเด็กหลัก ${teacherSizeText} ${baseChild} ตัว`;
                 if(eArr.length > 0) summaryText += `, สั่งเพิ่ม ${eArr.join(' ')}`;
@@ -912,12 +894,7 @@
                 if(st.orders_history && Array.isArray(st.orders_history)) {
                     st.orders_history.forEach(order => {
                         baseChild += order.base_child || 0; 
-                        
-                        // เอา default_size ที่ครูวัดมาใส่ในสรุปพัสดุ
-                        if(order.base_child > 0 && st.default_size) {
-                            factorySummary[`เด็ก-${st.default_size}`] += order.base_child;
-                        }
-                        
+                        if(order.base_child > 0 && st.default_size) { factorySummary[`เด็ก-${st.default_size}`] += order.base_child; }
                         totalStudentShirts += order.base_child || 0;
                         if(order.extra_child) order.extra_child.forEach(c => { factorySummary[`เด็ก-${c.size}`] = (factorySummary[`เด็ก-${c.size}`] || 0) + c.qty; extraChildText.push(`${c.size}(${c.qty})`); totalStudentShirts += c.qty; });
                         if(order.adult_items) order.adult_items.forEach(a => { factorySummary[`ผู้ใหญ่-${a.size}`] = (factorySummary[`ผู้ใหญ่-${a.size}`] || 0) + a.qty; adultText.push(`${a.size}(${a.qty})`); totalStudentShirts += a.qty; });
@@ -957,8 +934,7 @@
             if(confirm(`ต้องการปลดล็อคการกรอกไซส์ของห้อง ${room} ใช่หรือไม่?`)) {
                 toggleLoader(true);
                 await sbClient.from('students').update({size_locked: false}).eq('grade_room', room);
-                await loadAllStudentsForSearch();
-                toggleLoader(false);
+                await loadAllStudentsForSearch(); toggleLoader(false);
                 alert(`ปลดล็อคห้อง ${room} สำเร็จ คุณครูสามารถเข้าไปแก้ไขไซส์ได้แล้วครับ`);
             }
         }

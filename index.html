@@ -41,7 +41,6 @@
     <header class="bg-tuRed text-white shadow-md sticky top-0 z-40 border-b-4 border-tuYellow no-print">
         <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col lg:flex-row justify-between items-center gap-3">
             <div class="flex items-center gap-4">
-                <!-- โลโก้เอาพื้นหลังและขอบออกแล้ว -->
                 <div class="w-14 h-14 flex items-center justify-center">
                     <img src="https://nseojcnqomakymrrfumi.supabase.co/storage/v1/object/public/img/logo.png" onerror="this.outerHTML='<span class=\'text-2xl font-bold\'>TU</span>'" alt="โลโก้โรงเรียน" class="w-full h-full object-contain drop-shadow-md">
                 </div>
@@ -174,21 +173,27 @@
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 border-b-2 border-slate-50 pb-6">
                     <div>
                         <h2 class="text-2xl font-bold text-tuRed">แดชบอร์ดคุณครูประจำชั้น</h2>
-                        <div class="text-slate-600 font-bold mt-2 flex items-center gap-2">
-                            เลือกระบุไซส์ของห้อง: 
-                            <select id="teacherRoomSelect" onchange="loadTeacherDashboard()" class="text-lg text-tuRed border-b-2 border-tuRed bg-transparent focus:outline-none cursor-pointer pb-1">
-                                <option value="">-- กำลังโหลดห้องเรียน --</option>
-                            </select>
+                        <div class="text-slate-600 mt-2">
+                            <p class="font-bold text-lg">ห้องเรียน: <span id="teacherRoomDisplay" class="text-tuRed">กำลังโหลด...</span></p>
+                            <p class="text-sm mt-1" id="teacherNamesDisplay">ครูประจำชั้น: -</p>
                         </div>
                     </div>
-                    <div class="flex gap-4 text-center w-full md:w-auto">
-                        <div class="bg-slate-50 px-5 py-3 rounded-xl border border-slate-200 flex-1">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-center w-full md:w-auto">
+                        <div class="bg-slate-50 px-4 py-3 rounded-xl border border-slate-200 shadow-sm">
                             <p class="text-xs text-slate-500 font-bold mb-1">ระบุไซส์แล้ว</p>
                             <p class="text-2xl font-bold text-emerald-600" id="teacherCountDone">0</p>
                         </div>
-                        <div class="bg-slate-50 px-5 py-3 rounded-xl border border-slate-200 flex-1">
+                        <div class="bg-slate-50 px-4 py-3 rounded-xl border border-slate-200 shadow-sm">
                             <p class="text-xs text-slate-500 font-bold mb-1">ยังไม่ระบุไซส์</p>
                             <p class="text-2xl font-bold text-red-500" id="teacherCountPending">0</p>
+                        </div>
+                        <div class="bg-slate-50 px-4 py-3 rounded-xl border border-slate-200 shadow-sm">
+                            <p class="text-xs text-slate-500 font-bold mb-1">ชำระเงินแล้ว</p>
+                            <p class="text-2xl font-bold text-emerald-600" id="teacherCountPaid">0</p>
+                        </div>
+                        <div class="bg-slate-50 px-4 py-3 rounded-xl border border-slate-200 shadow-sm">
+                            <p class="text-xs text-slate-500 font-bold mb-1">ยังไม่ชำระเงิน</p>
+                            <p class="text-2xl font-bold text-red-500" id="teacherCountNotPaid">0</p>
                         </div>
                     </div>
                 </div>
@@ -517,18 +522,15 @@
         function populateRoomsFilter() {
             const sel1 = document.getElementById('finRoomFilter');
             const sel2 = document.getElementById('adminUnlockRoom');
-            const sel3 = document.getElementById('teacherRoomSelect');
             
             if(sel1) sel1.innerHTML = '<option value="">ดูทุกห้องเรียน</option>';
             if(sel2) sel2.innerHTML = '<option value="">เลือกห้องที่ต้องการปลดล็อค...</option>';
-            if(sel3) sel3.innerHTML = '<option value="">-- เลือกห้องเรียน --</option>';
 
             const rooms = [...new Set(allStudents.map(st => st.grade_room).filter(Boolean))].sort();
             if(rooms.length > 0) { 
                 rooms.forEach(r => {
                     if(sel1) sel1.innerHTML += `<option value="${r}">${r}</option>`;
                     if(sel2) sel2.innerHTML += `<option value="${r}">${r}</option>`;
-                    if(sel3) sel3.innerHTML += `<option value="${r}">${r}</option>`;
                 });
             } else { 
                 if(sel1) sel1.innerHTML = '<option value="">ไม่มีข้อมูลห้อง</option>'; 
@@ -558,7 +560,7 @@
             if (role === 'finance') { document.getElementById('sharedDashboard').classList.remove('hidden'); document.getElementById('view-backend-list').classList.remove('hidden'); loadBackendData(); } 
             else if (role === 'boss') { document.getElementById('sharedDashboard').classList.remove('hidden'); loadBackendData(); } 
             else if (role === 'admin') { document.getElementById('sharedDashboard').classList.remove('hidden'); document.getElementById('view-backend-list').classList.remove('hidden'); document.getElementById('view-admin').classList.remove('hidden'); loadBackendData(); loadAdminSettings(); }
-            else if (role === 'teacher') { document.getElementById('view-teacher').classList.remove('hidden'); }
+            else if (role === 'teacher') { document.getElementById('view-teacher').classList.remove('hidden'); loadTeacherDashboard(); }
         }
 
         async function doLogin() {
@@ -601,23 +603,13 @@
                     document.getElementById('view-teacher').classList.remove('hidden'); 
                     
                     let match = loggedInUsername.match(/teacher(\d)(\d)/);
-                    let guessedRoom = "";
                     if(match) {
-                        let r1 = `อ.${match[1]}/${match[2]}`;
-                        let r2 = `อนุบาล ${match[1]}/${match[2]}`;
-                        let r3 = `อนุบาล${match[1]}/${match[2]}`;
-                        let selectEl = document.getElementById('teacherRoomSelect');
-                        let options = Array.from(selectEl.options).map(o => o.value);
-                        if(options.includes(r1)) guessedRoom = r1;
-                        else if(options.includes(r2)) guessedRoom = r2;
-                        else if(options.includes(r3)) guessedRoom = r3;
-                    }
-                    if(guessedRoom) {
-                        document.getElementById('teacherRoomSelect').value = guessedRoom;
-                        loadTeacherDashboard();
+                        teacherAssignedRoom = `อ.${match[1]}/${match[2]}`;
                     } else {
-                        document.getElementById('teacherTableBody').innerHTML = '<tr><td colspan="4" class="text-center p-4 text-slate-500">กรุณาเลือกห้องเรียนของคุณที่ด้านบน</td></tr>';
+                        teacherAssignedRoom = prompt("กรุณาระบุห้องเรียนของคุณ (เช่น อ.1/1):") || "ไม่ระบุ";
                     }
+                    document.getElementById('teacherRoomDisplay').innerText = teacherAssignedRoom;
+                    loadTeacherDashboard();
                 }
             } else alert('ชื่อผู้ใช้งาน หรือรหัสผ่านไม่ถูกต้อง');
         }
@@ -642,15 +634,23 @@
 
         // ================= TEACHER VIEW (ครูระบุไซส์) =================
         async function loadTeacherDashboard() {
-            teacherAssignedRoom = document.getElementById('teacherRoomSelect').value;
             const tbody = document.getElementById('teacherTableBody');
             
-            if(!teacherAssignedRoom) {
-                tbody.innerHTML = '<tr><td colspan="4" class="text-center p-4 text-slate-500">กรุณาเลือกห้องเรียนของคุณที่ด้านบน</td></tr>';
-                document.getElementById('teacherCountDone').innerText = '0';
-                document.getElementById('teacherCountPending').innerText = '0';
+            if(!teacherAssignedRoom || teacherAssignedRoom === "ไม่ระบุ") {
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center p-4 text-slate-500">ไม่พบข้อมูลห้องเรียนของคุณ</td></tr>';
                 return;
             }
+
+            // แสดงชื่อครูประจำชั้น
+            let roomInfo = roomDetailsList.find(r => r.grade_room === teacherAssignedRoom);
+            let teacherText = "-";
+            if (roomInfo) {
+                let t1 = roomInfo.teacher1_name ? `${roomInfo.teacher1_name} (ครู${roomInfo.teacher1_nick || '-'})` : '';
+                let t2 = roomInfo.teacher2_name ? `${roomInfo.teacher2_name} (ครู${roomInfo.teacher2_nick || '-'})` : '';
+                let tArr = [t1, t2].filter(Boolean);
+                if(tArr.length > 0) teacherText = tArr.join(' และ ');
+            }
+            document.getElementById('teacherNamesDisplay').innerText = `ครูประจำชั้น: ${teacherText}`;
 
             toggleLoader(true);
             const { data } = await sbClient.from('students').select('*').eq('grade_room', teacherAssignedRoom).order('student_no', { ascending: true, nullsFirst: false }).order('first_name');
@@ -658,6 +658,7 @@
             
             let isLocked = false;
             let countDone = 0; let countPending = 0;
+            let countPaid = 0; let countNotPaid = 0;
             tbody.innerHTML = '';
 
             let childOptions = '<option value="">-- เลือกไซส์ --</option>';
@@ -671,6 +672,7 @@
             teacherStudentList.forEach((st, idx) => {
                 if(st.size_locked) isLocked = true;
                 if(st.default_size) countDone++; else countPending++;
+                if(st.payment_status === 'ชำระแล้ว') countPaid++; else countNotPaid++;
 
                 let badge = st.payment_status==='ชำระแล้ว'?'bg-emerald-100 text-emerald-700':st.payment_status==='รอตรวจสอบ'?'bg-amber-100 text-amber-700':'bg-slate-100 text-slate-600';
                 
@@ -692,6 +694,8 @@
 
             document.getElementById('teacherCountDone').innerText = countDone;
             document.getElementById('teacherCountPending').innerText = countPending;
+            document.getElementById('teacherCountPaid').innerText = countPaid;
+            document.getElementById('teacherCountNotPaid').innerText = countNotPaid;
 
             const lockBtn = document.getElementById('btnLockSize');
             if(isLocked) {
@@ -1198,7 +1202,7 @@
             if(document.getElementById('promptpayNumDisplay')) document.getElementById('promptpayNumDisplay').innerText = val; toggleLoader(false); alert('อัปเดตช่องทางรับเงินเรียบร้อยแล้ว');
         }
 
-        // ================= CSV Import / Excel =================
+        // ================= CSV Import / Excel (Students & Teachers) =================
         function downloadExcelTemplate() {
             const ws_data = [["student_no", "first_name", "last_name", "nickname", "grade_room"], [1, "สมหมาย", "ใจดี", "เต้", "อ.1/1"], [2, "มานี", "มีตา", "มิน", "อ.1/1"]];
             const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(ws_data), "Students"); XLSX.writeFile(wb, "Student_Template.xlsx");
@@ -1225,13 +1229,19 @@
                     for(let i=1; i<rows.length; i++) { 
                         let cols = rows[i];
                         if(!cols || cols.length < 4) continue; 
-                        let sno = parseInt(cols[0]); let fname, lname, nick, room;
+
+                        let sno = parseInt(cols[0]);
+                        let fname, lname, nick, room;
+
                         if(!isNaN(sno)) { 
                             fname = String(cols[1] || '').trim(); lname = String(cols[2] || '').trim(); nick = String(cols[3] || '').trim(); room = String(cols[4] || '').trim();
                         } else { 
                             sno = null; fname = String(cols[0] || '').trim(); lname = String(cols[1] || '').trim(); nick = String(cols[2] || '').trim(); room = String(cols[3] || '').trim();
                         }
-                        if(fname && lname && room) { newStudents.push({ student_no: sno, first_name: fname, last_name: lname, nickname: nick, grade_room: room }); }
+
+                        if(fname && lname && room) {
+                            newStudents.push({ student_no: sno, first_name: fname, last_name: lname, nickname: nick, grade_room: room });
+                        }
                     }
                     if(newStudents.length === 0) return alert('ข้อมูลผิดรูปแบบ (ต้องมี เลขที่, ชื่อ, สกุล, ชื่อเล่น, ห้อง)');
                     
@@ -1256,12 +1266,23 @@
                         if(!cols || cols.length < 1) continue; 
                         let room = String(cols[0] || '').trim();
                         if(!room) continue;
-                        newTeachers.push({ grade_room: room, teacher1_name: String(cols[1] || '').trim() || null, teacher1_nick: String(cols[2] || '').trim() || null, teacher2_name: String(cols[3] || '').trim() || null, teacher2_nick: String(cols[4] || '').trim() || null });
+                        newTeachers.push({
+                            grade_room: room,
+                            teacher1_name: String(cols[1] || '').trim() || null,
+                            teacher1_nick: String(cols[2] || '').trim() || null,
+                            teacher2_name: String(cols[3] || '').trim() || null,
+                            teacher2_nick: String(cols[4] || '').trim() || null
+                        });
                     }
                     if(newTeachers.length === 0) return alert('ข้อมูลผิดรูปแบบ');
-                    toggleLoader(true); const { error } = await sbClient.from('room_details').upsert(newTeachers, { onConflict: 'grade_room' }); toggleLoader(false);
+                    
+                    toggleLoader(true); 
+                    const { error } = await sbClient.from('room_details').upsert(newTeachers, { onConflict: 'grade_room' });
+                    toggleLoader(false);
                     if(error) throw error;
-                    alert(`นำเข้าข้อมูลครูสำเร็จ ${newTeachers.length} ห้อง!`); input.value = ''; await loadRoomDetails(); await loadAdminSettings(); 
+                    
+                    alert(`นำเข้าข้อมูลครูสำเร็จ ${newTeachers.length} ห้อง!`); 
+                    input.value = ''; await loadRoomDetails(); await loadAdminSettings(); 
                 } catch(error) { toggleLoader(false); alert("Error: " + error.message); }
             }; reader.readAsArrayBuffer(file);
         }
